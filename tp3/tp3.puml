@@ -1,0 +1,141 @@
+@startuml
+'Pieces
+interface Piece {
+    - name: String
+    - position: Square
+    + isActive(): boolean
+    + getPosition(): Square
+    + getColor(): string
+    + getName(): string
+}
+abstract class MoveCountPiece {
+    - move: int
+    + addMove()
+    + resetMoves()
+    + isFirstMove()
+}
+class CommonPiece implements Piece {
+    + move(sq: Square)
+}
+class PromotablePiece implements Piece {
+    + move(sq: Square)
+    + promoteTo(pc: Piece)
+}
+class PieceSet {
+    - color: string
+    - pieces: Piece[]
+    + getColor(): string
+}
+
+'Game objects
+class Game {
+    - board: Board
+    - ruleController: RuleController
+    - startTime: Timestamp
+    - activeTurn: Player
+    - players: Player[]
+    + startGame(time: Timestamp)
+    + move(py: Player,pc: Piece,sq: Square)
+    + endGame(winner?: Player)
+}
+interface Square {
+    + isOccupied()
+
+}
+class PositionSquare implements Square{
+    - row: Number
+    - column: Number
+    - piece?: Piece
+    + getRow()
+    + getColumn()
+    + getPiece(): Piece
+}
+class OccupiedSquare extends PositionSquare{
+    - occupiedBy: Piece
+    + getPiece: Piece
+    + isOccupied(): True
+}
+class EmptySquare extends PositionSquare{
+    + isOccupied(): False
+}
+interface Board {
+    + getSquareOccupation(sq: Square): Piece
+}
+class SquareBoard implements Board{
+    - squares: Square[]
+}
+
+class Player {
+    - pieceColor: string
+    - name: string
+    - isBot: boolean
+    - timeLeft: Timestamp
+    - pieces: PieceSet
+    + getCanMove(): Boolean
+    + getTimeLeft(): Timestamp
+    + makeMove(piece: Piece,sq: Square)
+    + offerStalemate()
+    + respondStalemate(): boolean
+    + resign()
+}
+Pawn <|-- MoveCountPiece
+Rook <|-- MoveCountPiece
+King <|-- MoveCountPiece
+Board *--  Square
+PieceSet *--  Piece
+
+
+Player *--  PieceSet
+Game *--  Board
+Player --*  Game
+
+'Rules
+class RuleController {
+    - endGameRules: EndGameRules[]
+    - rulesByPiece: {piece: Piece,rules: Rule[]}[]
+    + getPieceRules(piece: Piece): Rule[]
+}
+
+RuleController *-- Rule
+RuleController *--  EndGameRule
+Game *-- RuleController
+
+interface EndGameRule {
+    + hasGameFinished()
+}
+class StaleMateRule implements EndGameRule{
+    + hasGameFinished()
+}
+class FiftyKingMoves implements EndGameRule{
+    + hasGameFinished()
+}
+class CheckMateRule implements EndGameRule{
+    + hasGameFinished()
+}
+interface Rule {
+    + isPossible(pieces Piece[],board Board,possibleMovement: Movement): Boolean
+}
+class IsOnCheckRule implements Rule{
+}
+class MaxBoardRule implements Rule {
+}
+class NoPieceCrash implements Rule {
+}
+class CastleRule implements Rule {
+}
+class PassantCaptureRule implements Rule {
+}
+class PromoteRule implements Rule {
+}
+interface MoveRule extends Rule {
+    - limit: <Optional> int
+}
+class HorizontalMoveRule implements MoveRule {
+}
+class VerticalMoveRule implements MoveRule {
+}
+class DiagonalMoveRule implements MoveRule {
+}
+
+
+@enduml
