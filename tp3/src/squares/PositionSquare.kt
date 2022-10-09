@@ -18,7 +18,8 @@ class PositionSquare(row: Int,column: Int): Square {
         this.piece = pz
     }
 
-    override fun deletePiece() {
+    override fun movePieceFrom(): Piece? {
         this.piece = null
+        return piece
     }
 }

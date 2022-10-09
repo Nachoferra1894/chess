@@ -5,5 +5,5 @@ import pieces.Piece
 interface Square {
     fun getPiece(): Piece?
     fun movePieceTo(pz: Piece)
-    fun deletePiece()
+    fun movePieceFrom(): Piece?
 }

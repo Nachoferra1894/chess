@@ -2,7 +2,7 @@ package pieces
 
 import squares.Square
 
-class CommonPiece(private var name: PieceName,private var color: PieceColor) : Piece {
+class PromotablePiece(private var name: PieceName, private var color: PieceColor) : Piece {
     override fun isActive(): Boolean {
         TODO("Not yet implemented")
     }
@@ -13,6 +13,10 @@ class CommonPiece(private var name: PieceName,private var color: PieceColor) : P
 
     override fun getColor(): PieceColor {
         return color
+    }
+
+    fun promoteTo(piece: CommonPiece) {
+        this.name = piece.getName()
     }
 
 }
