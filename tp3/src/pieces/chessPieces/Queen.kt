@@ -1,9 +1,6 @@
 package pieces.chessPieces
 
-import pieces.MoveCountPiece
-import pieces.Piece
-import pieces.PieceColor
-import pieces.PieceName
+import pieces.*
 import rules.CastleRule
 import rules.NoPieceCrashRule
 import rules.Rule
@@ -12,7 +9,7 @@ import rules.moves.HorizontalMoveRule
 import rules.moves.VerticalMoveRule
 import squares.Square
 
-class Queen: Piece {
+class Queen(color: PieceColor): Piece, CommonPiece(color) {
     private val noPieceCrash = NoPieceCrashRule()
     private val verticalMoveRule = VerticalMoveRule()
     private val horizontalMoveRule = HorizontalMoveRule()
@@ -20,18 +17,11 @@ class Queen: Piece {
 
     val rules: List<Rule> = listOf(noPieceCrash,verticalMoveRule,horizontalMoveRule,diagonalMoveRule)
 
-    override fun isActive(): Boolean {
-        TODO("Not yet implemented")
-    }
-
     override fun getName(): PieceName {
         return PieceName.QUEEN
     }
 
-    override fun getColor(): PieceColor {
-        TODO("Not yet implemented")
-    }
-
-    override fun getCanMoveTo(sq: Square) {
+    override fun getCanMoveTo(sq: Square): Boolean {
+        TODO()
     }
 }

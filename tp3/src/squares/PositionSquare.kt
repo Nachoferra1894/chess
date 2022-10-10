@@ -2,24 +2,26 @@ package squares
 
 import pieces.Piece
 
-class PositionSquare(row: Int,column: Int): Square {
+class PositionSquare(private val row: Int,private val column: Int): Square {
     private var piece: Piece? = null
-    private val row: Int = row
-        get() = field
-
-    private val column: Int = column
-        get() = field
 
     override fun getPiece(): Piece? {
         return piece
     }
 
-    override fun movePieceTo(pz: Piece) {
+    override fun movePieceToThisSquare(pz: Piece){
         this.piece = pz
     }
 
-    override fun movePieceFrom(): Piece? {
+    override fun movePieceFromThisSquare(){
         this.piece = null
-        return piece
+    }
+
+    override fun getRow(): Int {
+        return row
+    }
+
+    override fun getColumn(): Int {
+        return column
     }
 }

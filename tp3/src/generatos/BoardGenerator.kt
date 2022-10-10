@@ -2,9 +2,7 @@ package generatos
 
 import pieces.Piece
 import pieces.PieceName
-import players.PieceSet
 import squares.Board
-import squares.PositionSquare
 import squares.Square
 import squares.SquareBoard
 
@@ -50,14 +48,17 @@ class BoardGenerator {
                 }
             }
             if (movePiece != null) {
-                row[i].movePieceTo(movePiece)
+                row[i].movePieceToThisSquare(movePiece)
+                if (movePiece.getName() === PieceName.KING){
+                    board.setKingPosition(movePiece.getColor(),row[i])
+                }
             }
         }
     }
 
     private fun addPawns(row: List<Square>,pieceSet: List<Piece>) {
         for (i in 0..row.size) {
-            pieceSet.find { it.getName() === PieceName.PAWN }?.let { row[i].movePieceTo(it) }
+            pieceSet.find { it.getName() === PieceName.PAWN }?.let { row[i].movePieceToThisSquare(it) }
         }
     }
 }

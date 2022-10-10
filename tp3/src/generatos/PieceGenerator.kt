@@ -1,13 +1,17 @@
 package generatos
 
 import pieces.*
+import pieces.chessPieces.*
 
 class PieceGenerator {
     fun createPiece(pieceName: PieceName,pieceColor: PieceColor): Piece{
-        return if (pieceName == PieceName.PAWN){
-            PromotablePiece(pieceName,pieceColor)
-        } else {
-            CommonPiece(pieceName,pieceColor)
+        return when(pieceName) {
+            PieceName.PAWN -> Pawn(pieceColor)
+            PieceName.ROOK -> Rook(pieceColor)
+            PieceName.HORSE -> Horse(pieceColor)
+            PieceName.BISHOP -> Bishop(pieceColor)
+            PieceName.QUEEN -> Queen(pieceColor)
+            PieceName.KING -> King(pieceColor)
         }
     }
 }

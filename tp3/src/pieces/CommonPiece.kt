@@ -1,18 +1,31 @@
 package pieces
 
-import squares.Square
+abstract class CommonPiece(private val color: PieceColor) {
+    private var isAlive: Boolean = true
+    fun getColor(): PieceColor{
+        return this.color
+    }
+    fun hasBeenEaten() {
+        this.isAlive = false
+    }
+    fun isActive(): Boolean {
+        return this.isAlive
+    }
+    var movesCount: Int = 0;
 
-class CommonPiece(private var name: PieceName,private var color: PieceColor) : Piece {
-    override fun isActive(): Boolean {
-        TODO("Not yet implemented")
+    fun makeMove(){
+        movesCount++
     }
 
-    override fun getName(): PieceName {
-        return name
+    fun isFirstMove(): Boolean{
+        return movesCount == 0
     }
 
-    override fun getColor(): PieceColor {
-        return color
+    fun getMoveCount(): Int {
+        return movesCount
     }
 
+    fun resetMoves(){
+        movesCount = 0;
+    }
 }

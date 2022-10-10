@@ -4,6 +4,8 @@ import pieces.Piece
 
 interface Square {
     fun getPiece(): Piece?
-    fun movePieceTo(pz: Piece)
-    fun movePieceFrom(): Piece?
+    fun movePieceToThisSquare(pz: Piece)
+    fun movePieceFromThisSquare()
+    fun getRow(): Int
+    fun getColumn(): Int
 }

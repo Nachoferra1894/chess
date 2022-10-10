@@ -7,12 +7,61 @@ interface Piece {
     + getColor(): string
     + getName(): string
 }
-class CommonPiece implements Piece {
-    + move(sq: Square)
+Pawn --> CommonPiece
+Bishop --> CommonPiece
+Horse --> CommonPiece
+King --> CommonPiece
+Queen --> CommonPiece
+Rook --> CommonPiece
+Rule --> Piece
+
+abstract class CommonPiece {
+        - isAlive: Boolean
+        - movesCount: Int
+        + getColor(): PieceColor
+        + hasBeenEaten()
+        + isActive(): Boolean
+        + makeMove()
+        + isFirstMove(): Boolean
+        + getMoveCount(): Int
+        + resetMoves()
 }
-class PromotablePiece implements Piece {
-    + move(sq: Square)
-    + promoteTo(pc: Piece)
+class Bishop implements Piece{
+    - color: PieceColor
+    - rules: List<Rule>
+    + getName()
+    + getCanMoveTo(sq: Square): Boolean
+}
+class Horse implements Piece{
+    - color: PieceColor
+    - rules: List<Rule>
+    + getName()
+    + getCanMoveTo(sq: Square): Boolean
+}
+class King implements Piece{
+    - color: PieceColor
+    - rules: List<Rule>
+    + getName()
+    + getCanMoveTo(sq: Square): Boolean
+}
+class Pawn implements Piece{
+    - color: PieceColor
+    - rules: List<Rule>
+    + getName()
+    + getCanMoveTo(sq: Square): Boolean
+    + promoteTo(pz: Piece)
+}
+class Queen implements Piece{
+    - color: PieceColor
+    - rules: List<Rule>
+    + getName()
+    + getCanMoveTo(sq: Square): Boolean
+}
+class Rook implements Piece{
+    - color: PieceColor
+    - rules: List<Rule>
+    + getName()
+    + getCanMoveTo(sq: Square): Boolean
 }
 'Game objects
 class Game {
@@ -42,7 +91,6 @@ Piece <-- PieceGenerator
 
 interface Square {
     + isOccupied()
-
 }
 class PositionSquare implements Square{
     - row: Number
@@ -51,14 +99,6 @@ class PositionSquare implements Square{
     + getRow()
     + getColumn()
     + getPiece(): Piece
-}
-class OccupiedSquare extends PositionSquare{
-    - occupiedBy: Piece
-    + getPiece: Piece
-    + isOccupied(): True
-}
-class EmptySquare extends PositionSquare{
-    + isOccupied(): False
 }
 interface Board {
     + getSquareOccupation(sq: Square): Piece
@@ -95,12 +135,14 @@ Player --*  Game
 
 'Rules
 class RuleController {
-    - endGameRules: EndGameRules[]
-    - rulesByPiece: {piece: Piece,rules: Rule[]}[]
-    + getPieceRules(piece: Piece): Rule[]
+    - endGameRule: CheckMateRule
+    - tieRules: EndGameRule[]
+    + checkForCheck(board: Board,sqFrom: Square,sqTo: Square,colorToCheck: PieceColor)
+    + checkForCheckMate(board: Board,colorToCheck: PieceColor)
+    + checkForTie(board: Board,colorToCheck: PieceColor)
+
 }
 
-RuleController *-- Rule
 RuleController *--  EndGameRule
 Game *-- RuleController
 
@@ -119,7 +161,9 @@ class CheckMateRule implements EndGameRule{
 interface Rule {
     + isPossible(pieces Piece[],board Board,possibleMovement: Movement): Boolean
 }
-class IsOnCheckRule implements Rule{
+IsOnCheckRule --> RuleController
+Square --* Board
+class IsOnCheckRule {
 }
 class MaxBoardRule implements Rule {
 }
