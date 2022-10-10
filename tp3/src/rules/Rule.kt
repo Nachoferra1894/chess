@@ -6,8 +6,8 @@ import squares.Square
 
 interface Rule {
     fun isMovePossible(
-        pieces: Array<Piece>,
         board: Board,
-        sq: Square
+        sqFrom: Square,
+        sqTo: Square
     ): Boolean
 }

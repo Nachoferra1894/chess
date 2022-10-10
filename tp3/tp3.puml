@@ -2,17 +2,10 @@
 'Pieces
 interface Piece {
     - name: String
-    - position: Square
     + isActive(): boolean
     + getPosition(): Square
     + getColor(): string
     + getName(): string
-}
-abstract class MoveCountPiece {
-    - move: int
-    + addMove()
-    + resetMoves()
-    + isFirstMove()
 }
 class CommonPiece implements Piece {
     + move(sq: Square)
@@ -21,12 +14,6 @@ class PromotablePiece implements Piece {
     + move(sq: Square)
     + promoteTo(pc: Piece)
 }
-class PieceSet {
-    - color: string
-    - pieces: Piece[]
-    + getColor(): string
-}
-
 'Game objects
 class Game {
     - board: Board
@@ -34,10 +21,25 @@ class Game {
     - startTime: Timestamp
     - activeTurn: Player
     - players: Player[]
-    + startGame(time: Timestamp)
+    - pieces: Piece[]
+    + startGame()
     + move(py: Player,pc: Piece,sq: Square)
     + endGame(winner?: Player)
 }
+class BoardGenerator {
+    + createBoard(columns,rows,pieces)
+}
+class PieceGenerator {
+    + createPiece(name,color)
+}
+class PlayerGenerator{
+    + createPlayer(name)
+}
+Player <-- PlayerGenerator
+Board <-- BoardGenerator
+Piece <-- PieceGenerator
+
+
 interface Square {
     + isOccupied()
 
@@ -64,28 +66,30 @@ interface Board {
 class SquareBoard implements Board{
     - squares: Square[]
 }
+'class Timer {
+'    - startGameTime: Timestamp
+'    - maxTime: Timestamp
+'    + resumeTimer()
+'    + stopTimer()
+'    + endGame()
+'}
 
-class Player {
+interface Player {
     - pieceColor: string
-    - name: string
-    - isBot: boolean
-    - timeLeft: Timestamp
-    - pieces: PieceSet
     + getCanMove(): Boolean
     + getTimeLeft(): Timestamp
-    + makeMove(piece: Piece,sq: Square)
+    + makeMove(sqFrom: Square,sqTo: Square)
     + offerStalemate()
     + respondStalemate(): boolean
     + resign()
 }
-Pawn <|-- MoveCountPiece
-Rook <|-- MoveCountPiece
-King <|-- MoveCountPiece
-Board *--  Square
-PieceSet *--  Piece
+class HumanPlayer {
+    - name: string
+}
+HumanPlayer ..|> Player
+Game --*  Piece
 
 
-Player *--  PieceSet
 Game *--  Board
 Player --*  Game
 

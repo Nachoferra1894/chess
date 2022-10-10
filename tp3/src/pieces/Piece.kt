@@ -6,4 +6,5 @@ interface Piece {
     fun isActive(): Boolean
     fun getName(): PieceName
     fun getColor(): PieceColor
+    fun getCanMoveTo(sq: Square)
 }

@@ -4,13 +4,12 @@ import pieces.Piece
 import squares.Board
 import squares.Square
 
-class VerticalMoveRule(
-        pieces: Array<Piece>,
-        board: Board,
-        sq: Square,
-) : MoveRule {
-    override val limit = 5;
-    override fun isMovePossible(pieces: Array<Piece>, board: Board, sq: Square): Boolean {
-        TODO("Not yet implemented")
+class VerticalMoveRule(override var limit: Int = 0) : MoveRule {
+    override fun isMovePossible(board: Board, sqFrom: Square, sqTo: Square): Boolean {
+        TODO()
+    }
+
+    fun changeLimit(newLimit: Int){
+        limit = newLimit
     }
 }

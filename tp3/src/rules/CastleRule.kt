@@ -4,11 +4,7 @@ import pieces.Piece
 import squares.Board
 import squares.Square
 
-class CastleRule(
-        pieces: Array<Piece>,
-        board: Board,
-        sq: Square
-) : Rule {
+class CastleRule: Rule {
     override fun isMovePossible(pieces: Array<Piece>, board: Board, sq: Square): Boolean {
         TODO("Not yet implemented")
     }
