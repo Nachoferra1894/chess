@@ -12,13 +12,13 @@ class Rook(color: PieceColor): Piece, CommonPiece(color) {
     private val noPieceCrash = NoPieceCrashRule()
     private val verticalMoveRule = VerticalMoveRule()
     private val castleRule = CastleRule()
-    val rules: List<Rule> = listOf(noPieceCrash,verticalMoveRule,castleRule)
+    private val rules: List<Rule> = listOf(noPieceCrash,verticalMoveRule,castleRule)
 
     override fun getName(): PieceName {
         return PieceName.ROOK
     }
 
-    override fun getCanMoveTo(sq: Square): Boolean {
-        TODO()
+    override fun getRules(): List<Rule> {
+        return rules
     }
 }

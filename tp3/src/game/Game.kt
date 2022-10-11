@@ -3,6 +3,7 @@ package game
 import generatos.BoardGenerator
 import generatos.PieceGenerator
 import generatos.PlayerGenerator
+import pieces.MovementValidator
 import pieces.Piece
 import pieces.PieceColor
 import pieces.PieceName
@@ -16,8 +17,9 @@ class Game(private val cols: Int, private val rows: Int) {
     private val playerGenerator: PlayerGenerator = PlayerGenerator()
     private val pieceGenerator: PieceGenerator = PieceGenerator()
     private val gameFinisher: GameFinisher = GameFinisher()
+    private val movementValidator: MovementValidator = MovementValidator()
 
-    private val pieceNames: MutableList<PieceName> = mutableListOf(PieceName.PAWN,PieceName.QUEEN,PieceName.BISHOP,PieceName.HORSE,PieceName.ROOK,PieceName.KING)
+    private val pieceNames: MutableList<PieceName> = mutableListOf(PieceName.PAWN, PieceName.QUEEN, PieceName.BISHOP, PieceName.HORSE, PieceName.ROOK, PieceName.KING)
     private lateinit var pieces: List<Piece>
     private lateinit var board: Board
     private lateinit var players: List<Player>
@@ -30,12 +32,12 @@ class Game(private val cols: Int, private val rows: Int) {
         if (player1Color == player2Color) {
             throw UnsupportedOperationException()
         }
-        players = listOf(playerGenerator.createPlayer(player1Name, player1Color),playerGenerator.createPlayer(player2Name, player2Color))
+        players = listOf(playerGenerator.createPlayer(player1Name, player1Color), playerGenerator.createPlayer(player2Name, player2Color))
 
         pieces = generatePieces(player1Color, player2Color)
 
-        board = boardGenerator.createBoard(cols, rows,pieces)
-        playerTurn = if(player1Color == PieceColor.WHITE) 0 else 1
+        board = boardGenerator.createBoard(cols, rows, pieces)
+        playerTurn = if (player1Color == PieceColor.WHITE) 0 else 1
     }
 
     private fun generatePieces(player1Color: PieceColor, player2Color: PieceColor): List<Piece> {
@@ -50,33 +52,36 @@ class Game(private val cols: Int, private val rows: Int) {
         return thisPieces
     }
 
-    fun movePiece(sqFrom: Square,sqTo: Square): Boolean {
+    fun movePiece(sqFrom: Square, sqTo: Square): Boolean {
         val playerToMove = players[playerTurn]
+        if (movementValidator.isMoveOutOfBoard(board,sqTo)){
+            return false
+        }
         if (ruleController.checkForCheck(board, sqFrom, sqTo, playerToMove.getColor())) {
             return false
         } else {
             val pieceToMove = sqFrom.getPiece() ?: return false
-            if (!pieceToMove.getCanMoveTo(sqTo)){
+            if (!movementValidator.isMovePossible(sqFrom, sqTo, pieceToMove.getRules())) {
                 return false
             }
             val eatenPiece = sqTo.getPiece()
-            if (eatenPiece !== null){
+            if (eatenPiece !== null) {
                 eatenPiece.hasBeenEaten()
             }
             board.movePieceFromSquare(sqFrom)
-            board.movePieceToSquare(sqTo,pieceToMove)
+            board.movePieceToSquare(sqTo, pieceToMove)
         }
         val nextPlayerToMove: Player = players[changePlayerTurn()]
-        if (ruleController.checkForTie(board,nextPlayerToMove.getColor())){
+        if (ruleController.checkForTie(board, nextPlayerToMove.getColor())) {
             gameFinisher.finishGameInTie()
-        } else if (ruleController.checkForCheckMate(board,nextPlayerToMove.getColor())){
+        } else if (ruleController.checkForCheckMate(board, nextPlayerToMove.getColor())) {
             gameFinisher.finishGame(playerToMove)
         }
 
         return true
     }
 
-    private fun changePlayerTurn(): Int{
+    private fun changePlayerTurn(): Int {
         val player = if (playerTurn == 1) 0 else 1
         playerTurn = player
         return player

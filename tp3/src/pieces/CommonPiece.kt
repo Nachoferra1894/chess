@@ -28,4 +28,7 @@ abstract class CommonPiece(private val color: PieceColor) {
     fun resetMoves(){
         movesCount = 0;
     }
+    open fun addMove(){
+        movesCount++;
+    }
 }

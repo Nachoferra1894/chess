@@ -13,13 +13,13 @@ import squares.Square
 class Horse(color: PieceColor): Piece, CommonPiece(color) {
     private val horseMoveRule = HorseMoveRule()
 
-    val rules: List<Rule> = listOf(horseMoveRule)
+    private val rules: List<Rule> = listOf(horseMoveRule)
 
     override fun getName(): PieceName {
         return PieceName.HORSE
     }
 
-    override fun getCanMoveTo(sq: Square): Boolean {
-        TODO()
+    override fun getRules(): List<Rule> {
+        return rules
     }
 }

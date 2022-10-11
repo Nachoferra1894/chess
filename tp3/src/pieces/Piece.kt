@@ -1,5 +1,6 @@
 package pieces
 
+import rules.Rule
 import squares.Square
 
 interface Piece {
@@ -7,5 +8,5 @@ interface Piece {
     fun hasBeenEaten()
     fun getName(): PieceName
     fun getColor(): PieceColor
-    fun getCanMoveTo(sq: Square): Boolean
+    fun getRules(): List<Rule>
 }

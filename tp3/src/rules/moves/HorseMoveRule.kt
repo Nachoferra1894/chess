@@ -5,7 +5,7 @@ import squares.Board
 import squares.Square
 
 class HorseMoveRule(override val limit: Int? = 0) : MoveRule {
-     override fun isMovePossible(board: Board, sqFrom: Square, sqTo: Square): Boolean {
+     override fun isMovePossible(sqFrom: Square, sqTo: Square): Boolean {
         TODO()
     }
 }

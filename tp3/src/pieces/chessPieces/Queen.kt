@@ -15,13 +15,13 @@ class Queen(color: PieceColor): Piece, CommonPiece(color) {
     private val horizontalMoveRule = HorizontalMoveRule()
     private val diagonalMoveRule = DiagonalMoveRule()
 
-    val rules: List<Rule> = listOf(noPieceCrash,verticalMoveRule,horizontalMoveRule,diagonalMoveRule)
+    private val rules: List<Rule> = listOf(noPieceCrash,verticalMoveRule,horizontalMoveRule,diagonalMoveRule)
 
     override fun getName(): PieceName {
         return PieceName.QUEEN
     }
 
-    override fun getCanMoveTo(sq: Square): Boolean {
-        TODO()
+    override fun getRules(): List<Rule> {
+        return rules
     }
 }

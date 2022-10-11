@@ -11,14 +11,19 @@ class Pawn(color: PieceColor): Piece, CommonPiece(color) {
     private val noPieceCrash = NoPieceCrashRule()
     private val verticalMoveRule = VerticalMoveRule(2)
     private val diagonalMoveRule = DiagonalMoveRule(1)
-    val rules: List<Rule> = listOf(noPieceCrash,verticalMoveRule,diagonalMoveRule)
+    private val rules: List<Rule> = listOf(noPieceCrash,verticalMoveRule,diagonalMoveRule)
 
     override fun getName(): PieceName {
         return PieceName.PAWN
     }
 
-    override fun getCanMoveTo(sq: Square): Boolean {
-        TODO()
+    override fun getRules(): List<Rule> {
+        return rules
+    }
+
+    override fun addMove() {
+        movesCount++
         verticalMoveRule.changeLimit(1)
     }
+
 }

@@ -13,14 +13,14 @@ class Bishop(color: PieceColor): Piece, CommonPiece(color) {
     private val noPieceCrash = NoPieceCrashRule()
     private val diagonalMoveRule = DiagonalMoveRule()
 
-    val rules: List<Rule> = listOf(noPieceCrash,diagonalMoveRule)
+    private val rules: List<Rule> = listOf(noPieceCrash,diagonalMoveRule)
 
     override fun getName(): PieceName {
         return PieceName.BISHOP
     }
 
 
-    override fun getCanMoveTo(sq: Square): Boolean {
-        TODO()
+    override fun getRules(): List<Rule> {
+        return rules
     }
 }
