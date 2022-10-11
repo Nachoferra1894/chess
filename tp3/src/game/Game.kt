@@ -86,4 +86,16 @@ class Game(private val cols: Int, private val rows: Int) {
         playerTurn = player
         return player
     }
+
+    fun offerStaleMate(){
+        val nextPlayerToMove: Player = players[changePlayerTurn()]
+        if (nextPlayerToMove.respondStaleMate()){
+            gameFinisher.finishGameInTie()
+        }
+    }
+
+    fun resign(){
+        val nextPlayerToMove: Player = players[changePlayerTurn()]
+        gameFinisher.finishGame(nextPlayerToMove)
+    }
 }
