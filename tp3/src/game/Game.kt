@@ -15,6 +15,7 @@ class Game(private val cols: Int, private val rows: Int) {
     private val boardGenerator: BoardGenerator = BoardGenerator()
     private val playerGenerator: PlayerGenerator = PlayerGenerator()
     private val pieceGenerator: PieceGenerator = PieceGenerator()
+    private val gameFinisher: GameFinisher = GameFinisher()
 
     private val pieceNames: MutableList<PieceName> = mutableListOf(PieceName.PAWN,PieceName.QUEEN,PieceName.BISHOP,PieceName.HORSE,PieceName.ROOK,PieceName.KING)
     private lateinit var pieces: List<Piece>
@@ -64,13 +65,20 @@ class Game(private val cols: Int, private val rows: Int) {
             }
             board.movePieceFromSquare(sqFrom)
             board.movePieceToSquare(sqTo,pieceToMove)
-
-            changePlayerTurn()
         }
+        val nextPlayerToMove: Player = players[changePlayerTurn()]
+        if (ruleController.checkForTie(board,nextPlayerToMove.getColor())){
+            gameFinisher.finishGameInTie()
+        } else if (ruleController.checkForCheckMate(board,nextPlayerToMove.getColor())){
+            gameFinisher.finishGame(playerToMove)
+        }
+
         return true
     }
 
-    private fun changePlayerTurn(){
-        playerTurn = if (playerTurn == 1) 0 else 1
+    private fun changePlayerTurn(): Int{
+        val player = if (playerTurn == 1) 0 else 1
+        playerTurn = player
+        return player
     }
 }

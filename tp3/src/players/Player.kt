@@ -9,4 +9,5 @@ interface Player{
     fun respondStaleMate(): Boolean
     fun resign()
     fun getColor(): PieceColor
+    fun getName(): String
 }

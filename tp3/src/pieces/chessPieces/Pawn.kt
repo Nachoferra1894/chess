@@ -10,7 +10,7 @@ import squares.Square
 class Pawn(color: PieceColor): Piece, CommonPiece(color) {
     private val noPieceCrash = NoPieceCrashRule()
     private val verticalMoveRule = VerticalMoveRule(2)
-    private val diagonalMoveRule = DiagonalMoveRule(2)
+    private val diagonalMoveRule = DiagonalMoveRule(1)
     val rules: List<Rule> = listOf(noPieceCrash,verticalMoveRule,diagonalMoveRule)
 
     override fun getName(): PieceName {
