@@ -4,8 +4,8 @@ import pieces.Piece
 import squares.Board
 import squares.Square
 
-class MaxBoardRule : Rule {
-    override fun isMovePossible(pieces: Array<Piece>, board: Board, sq: Square): Boolean {
-        TODO("Not yet implemented")
+class MaxBoardRule {
+    fun isMovePossible(board: Board, sq: Square): Boolean {
+
     }
 }
