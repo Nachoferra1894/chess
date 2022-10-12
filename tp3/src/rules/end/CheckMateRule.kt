@@ -1,8 +1,11 @@
 package rules.end
 
+import pieces.PieceColor
+import squares.Board
+
 
 class CheckMateRule: EndGameRule {
-    override fun hasGameFinished(): Boolean {
-        return true
+    override fun hasGameFinished(board: Board, turnColor: PieceColor): Boolean {
+    TODO()
     }
 }

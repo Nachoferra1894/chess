@@ -8,6 +8,8 @@ class SquareBoard(columns: Int, rows: Int) : Board {
     private val squares: List<List<Square>> = initSquares(columns, rows)
     private lateinit var whiteKingPosition: Square
     private lateinit var blackKingPosition: Square
+    private var maxRows: Int = 0
+    private var maxCols: Int = 0
 
     override fun getSquareOccupation(sq: Square): Piece? {
         return sq.getPiece()
@@ -19,6 +21,14 @@ class SquareBoard(columns: Int, rows: Int) : Board {
 
     override fun getKingPosition(color: PieceColor): Square {
         return if (color == PieceColor.WHITE) whiteKingPosition else blackKingPosition
+    }
+
+    override fun getMaxRows(): Int {
+        return maxRows
+    }
+
+    override fun getMaxCols(): Int {
+        return maxCols
     }
 
     override fun movePieceToSquare(sq: Square, pz: Piece) {
@@ -36,6 +46,8 @@ class SquareBoard(columns: Int, rows: Int) : Board {
         val rowArray: MutableList<Square> = mutableListOf();
         val columnArray: MutableList<List<Square>> = mutableListOf();
         var sq: Square;
+        maxCols = columns
+        maxRows = rows
 
         for (c in 0..columns) {
             for (r in 0..rows) {

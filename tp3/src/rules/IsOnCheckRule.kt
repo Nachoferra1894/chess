@@ -6,7 +6,8 @@ import squares.Square
 
 class IsOnCheckRule {
     fun isMovePossible(board: Board,playerColor: PieceColor): Boolean {
-        TODO("Not yet implemented")
+        val kingPos: Square = board.getKingPosition(playerColor)
+        TODO()
     }
     fun doesMoveBlock(board: Board,sqFrom: Square, sqTo: Square,playerColor: PieceColor): Boolean{
         TODO("Not yet implemented")
