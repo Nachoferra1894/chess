@@ -30,38 +30,31 @@ class Bishop implements Piece{
     - color: PieceColor
     - rules: List<Rule>
     + getName()
-    + getCanMoveTo(sq: Square): Boolean
 }
 class Horse implements Piece{
     - color: PieceColor
     - rules: List<Rule>
     + getName()
-    + getCanMoveTo(sq: Square): Boolean
 }
 class King implements Piece{
     - color: PieceColor
     - rules: List<Rule>
     + getName()
-    + getCanMoveTo(sq: Square): Boolean
 }
 class Pawn implements Piece{
     - color: PieceColor
     - rules: List<Rule>
     + getName()
-    + getCanMoveTo(sq: Square): Boolean
-    + promoteTo(pz: Piece)
 }
 class Queen implements Piece{
     - color: PieceColor
     - rules: List<Rule>
     + getName()
-    + getCanMoveTo(sq: Square): Boolean
 }
 class Rook implements Piece{
     - color: PieceColor
     - rules: List<Rule>
     + getName()
-    + getCanMoveTo(sq: Square): Boolean
 }
 'Game objects
 class Game {
@@ -71,10 +64,17 @@ class Game {
     - activeTurn: Player
     - players: Player[]
     - pieces: Piece[]
+    - turnController: TurnController
     + startGame()
     + move(py: Player,pc: Piece,sq: Square)
     + endGame(winner?: Player)
 }
+class TurnController {
+    - playerTurn: Int
+    + getPlayerTurn()
+    + changePlayerTurn()
+}
+TurnController <-- Game
 class BoardGenerator {
     + createBoard(columns,rows,pieces)
 }

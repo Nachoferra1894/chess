@@ -10,7 +10,6 @@ class NoPieceCrashRule {
         var fromCol = sqFrom.getColumn()
         val toRow = sqTo.getRow()
         val toCol = sqTo.getColumn()
-        var currentSquare: Square;
 
         val rowIterator = (if (fromRow > toRow) -1 else 1) * moveRule.getRowMoveType()
         val colIterator = (if (fromCol > toCol) -1 else 1) * moveRule.getColMoveType()
@@ -19,7 +18,7 @@ class NoPieceCrashRule {
         fromCol+=colIterator
 
         while (fromRow != toRow && fromCol != toCol) {
-            currentSquare = PositionSquare(fromRow, fromCol)
+            val currentSquare: Square = PositionSquare(fromRow, fromCol)
             if (currentSquare.getPiece() != null){
                 return false
             }

@@ -19,13 +19,13 @@ class Game(private val cols: Int, private val rows: Int) {
     private val pieceGenerator: PieceGenerator = PieceGenerator()
     private val gameFinisher: GameFinisher = GameFinisher()
     private val movementValidator: MovementValidator = MovementValidator()
+    private val turnController: TurnController = TurnController()
 
     private val pieceNames: MutableList<PieceName> = mutableListOf(PieceName.PAWN, PieceName.QUEEN, PieceName.BISHOP, PieceName.HORSE, PieceName.ROOK, PieceName.KING)
     private lateinit var pieces: List<Piece>
     private lateinit var board: Board
     private lateinit var players: List<Player>
     private lateinit var player2: Player
-    private var playerTurn = 0;
     private val ruleController = RuleController()
 
 
@@ -38,7 +38,8 @@ class Game(private val cols: Int, private val rows: Int) {
         pieces = generatePieces(player1Color, player2Color)
 
         board = boardGenerator.createBoard(cols, rows, pieces)
-        playerTurn = if (player1Color == PieceColor.WHITE) 0 else 1
+        turnController.initTurns(player1Color)
+
     }
 
     private fun generatePieces(player1Color: PieceColor, player2Color: PieceColor): List<Piece> {
@@ -54,7 +55,7 @@ class Game(private val cols: Int, private val rows: Int) {
     }
 
     fun movePiece(sqFrom: Square, sqTo: Square): Boolean {
-        val playerToMove = players[playerTurn]
+        val playerToMove = players[turnController.getPlayerTurn()]
         if (movementValidator.isMoveOutOfBoard(board,sqTo)){
             return false
         }
@@ -72,7 +73,7 @@ class Game(private val cols: Int, private val rows: Int) {
             board.movePieceFromSquare(sqFrom)
             board.movePieceToSquare(sqTo, pieceToMove)
         }
-        val nextPlayerToMove: Player = players[changePlayerTurn()]
+        val nextPlayerToMove: Player = players[turnController.changePlayerTurn()]
         if (ruleController.checkForTie(board, nextPlayerToMove.getColor())) {
             gameFinisher.finishGameInTie()
         } else if (ruleController.checkForCheckMate(board, nextPlayerToMove.getColor())) {
@@ -82,21 +83,15 @@ class Game(private val cols: Int, private val rows: Int) {
         return true
     }
 
-    private fun changePlayerTurn(): Int {
-        val player = if (playerTurn == 1) 0 else 1
-        playerTurn = player
-        return player
-    }
-
     fun offerStaleMate(){
-        val nextPlayerToMove: Player = players[changePlayerTurn()]
+        val nextPlayerToMove: Player = players[turnController.changePlayerTurn()]
         if (nextPlayerToMove.respondStaleMate()){
             gameFinisher.finishGameInTie()
         }
     }
 
     fun resign(){
-        val nextPlayerToMove: Player = players[changePlayerTurn()]
+        val nextPlayerToMove: Player = players[turnController.changePlayerTurn()]
         gameFinisher.finishGame(nextPlayerToMove)
     }
 }
