@@ -9,4 +9,11 @@ class HorizontalMoveRule(override val limit: Int = 0) : MoveRule {
         val limitValidation = if (limit == 0) true else (kotlin.math.abs(difference) >= limit)
         return (sqFrom.getRow() == sqTo.getRow() && limitValidation)
     }
+    override fun getRowMoveType(): Int {
+        return 0
+    }
+
+    override fun getColMoveType(): Int {
+        return 1
+    }
 }

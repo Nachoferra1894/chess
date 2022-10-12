@@ -9,4 +9,6 @@ interface Rule {
         sqFrom: Square,
         sqTo: Square
     ): Boolean
+    fun getRowMoveType(): Int
+    fun getColMoveType(): Int
 }

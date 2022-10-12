@@ -60,7 +60,7 @@ class SquareBoard(columns: Int, rows: Int) : Board {
         return columnArray.toList();
     }
 
-    private fun setKingPosition(color: PieceColor, sq: Square) {
-        if (color == PieceColor.WHITE) whiteKingPosition = sq else blackKingPosition = sq
+    override fun setKingPosition(color: PieceColor, square: Square) {
+        if (color == PieceColor.WHITE) whiteKingPosition = square else blackKingPosition = square
     }
 }

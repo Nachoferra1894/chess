@@ -4,10 +4,7 @@ import pieces.*
 import rules.CastleRule
 import rules.NoPieceCrashRule
 import rules.Rule
-import rules.moves.DiagonalMoveRule
-import rules.moves.HorizontalMoveRule
-import rules.moves.HorseMoveRule
-import rules.moves.VerticalMoveRule
+import rules.moves.*
 import squares.Square
 
 class Horse(color: PieceColor): Piece, CommonPiece(color) {
@@ -21,5 +18,8 @@ class Horse(color: PieceColor): Piece, CommonPiece(color) {
 
     override fun getRules(): List<Rule> {
         return rules
+    }
+    override fun useNoPieceCrashRule(): Boolean {
+        return false
     }
 }

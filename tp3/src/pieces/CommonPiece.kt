@@ -31,4 +31,8 @@ abstract class CommonPiece(private val color: PieceColor) {
     open fun addMove(){
         movesCount++;
     }
+    open fun useNoPieceCrashRule(): Boolean{
+        return true
+    }
+
 }

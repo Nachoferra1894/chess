@@ -10,12 +10,11 @@ import rules.moves.VerticalMoveRule
 import squares.Square
 
 class Queen(color: PieceColor): Piece, CommonPiece(color) {
-    private val noPieceCrash = NoPieceCrashRule()
     private val verticalMoveRule = VerticalMoveRule()
     private val horizontalMoveRule = HorizontalMoveRule()
     private val diagonalMoveRule = DiagonalMoveRule()
 
-    private val rules: List<Rule> = listOf(noPieceCrash,verticalMoveRule,horizontalMoveRule,diagonalMoveRule)
+    private val rules: List<Rule> = listOf(verticalMoveRule,horizontalMoveRule,diagonalMoveRule)
 
     override fun getName(): PieceName {
         return PieceName.QUEEN

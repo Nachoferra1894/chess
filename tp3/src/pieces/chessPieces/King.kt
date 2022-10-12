@@ -13,7 +13,7 @@ class King(color: PieceColor): Piece, CommonPiece(color) {
     private val verticalMoveRule = VerticalMoveRule(1)
     private val diagonalMoveRule = DiagonalMoveRule(1)
     private val casteRule = CastleRule()
-    private val rules: List<Rule> = listOf(noPieceCrash,verticalMoveRule,diagonalMoveRule,casteRule)
+    private val rules: List<Rule> = listOf(verticalMoveRule,diagonalMoveRule,casteRule)
 
     override fun getName(): PieceName {
         return PieceName.KING

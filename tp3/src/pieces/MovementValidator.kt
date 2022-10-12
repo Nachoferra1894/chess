@@ -1,19 +1,24 @@
 package pieces
 
 import rules.MaxBoardRule
+import rules.NoPieceCrashRule
 import rules.Rule
+import rules.moves.MoveRule
 import squares.Board
 import squares.Square
 
 class MovementValidator {
     private val maxBoardRule = MaxBoardRule()
-    fun isMovePossible(sqFrom: Square,sqTo: Square,rules: List<Rule>): Boolean{
-        for (rule in rules){
-            if(!rule.isMovePossible(sqFrom,sqTo)){
-               return false
+    private val noPieceCrashRule = NoPieceCrashRule()
+    fun isMovePossible(sqFrom: Square,sqTo: Square,moveRules: List<Rule>,noPieceCrash: Boolean): Boolean{
+        for (rule in moveRules){
+            if(rule.isMovePossible(sqFrom,sqTo)){
+                return if (noPieceCrash){
+                    noPieceCrashRule.isMovePossible(sqFrom,sqTo,rule)
+                } else true
             }
         }
-        return true
+        return false
     }
     fun isMoveOutOfBoard(board: Board,sqTo: Square): Boolean{
         return maxBoardRule.isMovePossible(board,sqTo)

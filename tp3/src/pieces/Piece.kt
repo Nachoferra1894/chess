@@ -9,4 +9,5 @@ interface Piece {
     fun getName(): PieceName
     fun getColor(): PieceColor
     fun getRules(): List<Rule>
+    fun useNoPieceCrashRule(): Boolean
 }

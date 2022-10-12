@@ -13,4 +13,5 @@ interface Board {
 
     fun movePieceToSquare(sq: Square, pz: Piece)
     fun movePieceFromSquare(sq: Square)
+    fun setKingPosition(color: PieceColor, square: Square)
 }

@@ -11,6 +11,14 @@ class VerticalMoveRule(override var limit: Int = 0) : MoveRule {
         return (sqFrom.getColumn() == sqTo.getColumn() && limitValidation)
     }
 
+    override fun getRowMoveType(): Int {
+        return 1
+    }
+
+    override fun getColMoveType(): Int {
+        return 0
+    }
+
     fun changeLimit(newLimit: Int){
         limit = newLimit
     }

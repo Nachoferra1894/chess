@@ -8,6 +8,7 @@ import pieces.Piece
 import pieces.PieceColor
 import pieces.PieceName
 import players.Player
+import rules.Rule
 import rules.RuleController
 import squares.Board
 import squares.Square
@@ -61,7 +62,7 @@ class Game(private val cols: Int, private val rows: Int) {
             return false
         } else {
             val pieceToMove = sqFrom.getPiece() ?: return false
-            if (!movementValidator.isMovePossible(sqFrom, sqTo, pieceToMove.getRules())) {
+            if (!movementValidator.isMovePossible(sqFrom, sqTo, pieceToMove.getRules(),pieceToMove.useNoPieceCrashRule())) {
                 return false
             }
             val eatenPiece = sqTo.getPiece()
