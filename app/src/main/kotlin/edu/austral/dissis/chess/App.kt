@@ -22,7 +22,7 @@ class ChessGameApplication : Application() {
     private val imageResolver = CachedImageResolver(DefaultImageResolver())
 
     companion object {
-        const val GameTitle = "Chess"
+        const val GameTitle = "Chess Nacho"
     }
 
     override fun start(primaryStage: Stage) {
