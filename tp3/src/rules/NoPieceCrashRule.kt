@@ -5,7 +5,7 @@ import squares.PositionSquare
 import squares.Square
 
 class NoPieceCrashRule {
-    fun isMovePossible(sqFrom: Square, sqTo: Square,moveRule: Rule): Boolean {
+    fun isMovePossible(sqFrom: Square, sqTo: Square,moveRule: RuleMoveType): Boolean {
         var fromRow = sqFrom.getRow()
         var fromCol = sqFrom.getColumn()
         val toRow = sqTo.getRow()

@@ -1,5 +1,7 @@
 package pieces
 
+import rules.ExtraRule
+
 abstract class CommonPiece(private val color: PieceColor) {
     private var isAlive: Boolean = true
     fun getColor(): PieceColor{
@@ -17,22 +19,21 @@ abstract class CommonPiece(private val color: PieceColor) {
         movesCount++
     }
 
-    fun isFirstMove(): Boolean{
-        return movesCount == 0
-    }
-
     fun getMoveCount(): Int {
         return movesCount
     }
 
     fun resetMoves(){
-        movesCount = 0;
+        movesCount = 1;
     }
     open fun addMove(){
         movesCount++;
     }
     open fun useNoPieceCrashRule(): Boolean{
         return true
+    }
+    open fun getExtraRules(): List<ExtraRule>? {
+        return emptyList()
     }
 
 }

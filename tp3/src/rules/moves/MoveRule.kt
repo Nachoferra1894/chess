@@ -1,9 +1,10 @@
 package rules.moves
 
-import pieces.CommonPiece
-import pieces.Piece
-import rules.Rule
+import rules.RuleMoveType
+import squares.Board
+import squares.Square
 
-interface MoveRule: Rule {
+interface MoveRule: RuleMoveType {
     val limit: Int?
+    fun isMovePossible(sqFrom: Square, sqTo: Square): Boolean
 }

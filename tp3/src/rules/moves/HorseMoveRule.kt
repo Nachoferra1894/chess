@@ -19,4 +19,12 @@ class HorseMoveRule(override val limit: Int? = 0) : MoveRule {
          }
          return false
     }
+
+    override fun getRowMoveType(): Int {
+        return 2
+    }
+
+    override fun getColMoveType(): Int {
+        return 1
+    }
 }

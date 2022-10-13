@@ -13,8 +13,11 @@ class PositionSquare(private val row: Int,private val column: Int): Square {
         this.piece = pz
     }
 
-    override fun movePieceFromThisSquare(){
+    override fun movePieceFromThisSquare(): Piece? {
+        val newPiece = this.piece
         this.piece = null
+        return newPiece
+
     }
 
     override fun getRow(): Int {

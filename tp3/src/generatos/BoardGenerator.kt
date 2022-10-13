@@ -9,7 +9,7 @@ import squares.SquareBoard
 class BoardGenerator {
     private lateinit var board: Board;
     fun createBoard(columns: Int,rows: Int,pieces: List<Piece>): Board{
-        board = SquareBoard(columns,rows)
+        val board = SquareBoard(columns,rows)
         val squares = board.getSquares();
 
         // I assume that both players play with the same set of pieces
@@ -20,6 +20,10 @@ class BoardGenerator {
         addCommonPieces(squares[7],pieces)
 
         return board;
+    }
+
+    fun createBoardFromSquares(squares: List<List<Square>>): SquareBoard {
+        return SquareBoard(squares)
     }
 
     private fun addCommonPieces(row: List<Square>,pieceSet: List<Piece>){

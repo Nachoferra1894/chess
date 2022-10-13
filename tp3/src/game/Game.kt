@@ -8,7 +8,6 @@ import pieces.Piece
 import pieces.PieceColor
 import pieces.PieceName
 import players.Player
-import rules.Rule
 import rules.RuleController
 import squares.Board
 import squares.Square
@@ -56,14 +55,11 @@ class Game(private val cols: Int, private val rows: Int) {
 
     fun movePiece(sqFrom: Square, sqTo: Square): Boolean {
         val playerToMove = players[turnController.getPlayerTurn()]
-        if (movementValidator.isMoveOutOfBoard(board,sqTo)){
-            return false
-        }
         if (ruleController.checkForCheck(board, sqFrom, sqTo, playerToMove.getColor())) {
             return false
         } else {
             val pieceToMove = sqFrom.getPiece() ?: return false
-            if (!movementValidator.isMovePossible(sqFrom, sqTo, pieceToMove.getRules(),pieceToMove.useNoPieceCrashRule())) {
+            if (!movementValidator.isMovePossible(board,sqFrom, sqTo, pieceToMove.getMovementRules(), pieceToMove.getExtraRules(),pieceToMove.useNoPieceCrashRule())) {
                 return false
             }
             val eatenPiece = sqTo.getPiece()

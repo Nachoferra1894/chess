@@ -16,7 +16,7 @@ class Horse(color: PieceColor): Piece, CommonPiece(color) {
         return PieceName.HORSE
     }
 
-    override fun getRules(): List<Rule> {
+    override fun getMovementRules(): List<Rule> {
         return rules
     }
     override fun useNoPieceCrashRule(): Boolean {

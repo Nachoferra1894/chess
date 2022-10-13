@@ -20,7 +20,7 @@ class Queen(color: PieceColor): Piece, CommonPiece(color) {
         return PieceName.QUEEN
     }
 
-    override fun getRules(): List<Rule> {
+    override fun getMovementRules(): List<Rule> {
         return rules
     }
 }

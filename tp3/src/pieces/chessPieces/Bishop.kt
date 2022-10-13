@@ -1,19 +1,13 @@
 package pieces.chessPieces
 
 import pieces.*
-import rules.CastleRule
-import rules.NoPieceCrashRule
-import rules.Rule
 import rules.moves.DiagonalMoveRule
-import rules.moves.HorizontalMoveRule
 import rules.moves.MoveRule
-import rules.moves.VerticalMoveRule
-import squares.Square
 
-class Bishop(color: PieceColor): Piece, CommonPiece(color) {
+class Bishop(color: PieceColor) : Piece, CommonPiece(color) {
     private val diagonalMoveRule = DiagonalMoveRule()
 
-    private val rules: List<Rule> = listOf(diagonalMoveRule)
+    private val rules: List<MoveRule> = listOf(diagonalMoveRule)
 
 
     override fun getName(): PieceName {
@@ -21,7 +15,7 @@ class Bishop(color: PieceColor): Piece, CommonPiece(color) {
     }
 
 
-    override fun getRules(): List<Rule> {
+    override fun getMovementRules(): List<MoveRule> {
         return rules
     }
 }
