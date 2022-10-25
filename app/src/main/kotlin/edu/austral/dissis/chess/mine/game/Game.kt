@@ -86,7 +86,7 @@ class Game() {
                 pieceToMove.useNoPieceCrashRule()
             )
         ) {
-            throw IllegalArgumentException("${pieceToMove.getName()} can't move to ${sqTo.getColumn()}${sqTo.getRow()}")
+            throw IllegalArgumentException("${pieceToMove.getName()} can't move to ${sqTo.getColumn()};${sqTo.getRow()}")
         }
         val eatenPiece = pieceController.getPieceInSquare(sqTo)
 

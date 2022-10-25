@@ -2,20 +2,18 @@ package rules.moves
 
 import squares.Square
 
-class VerticalMoveRule(override var limit: Int = 0) : MoveRule {
+class VerticalMoveRule(override var limit: Int = 0, override var moveType: MoveType = MoveType.ANY) : MoveRule, CommonMoveRule(limit,moveType){
     override fun isMovePossible(sqFrom: Square, sqTo: Square): Boolean {
-        val difference = sqFrom.getColumn() - sqTo.getColumn()
-        if (difference === 0) return false
-        val limitValidation = if (limit == 0) true else (kotlin.math.abs(difference) >= limit)
-        return (sqFrom.getRow() == sqTo.getRow() && limitValidation)
+        val difference = sqFrom.getRow() - sqTo.getRow()
+        return (sqFrom.getColumn() == sqTo.getColumn() && super.isMovePossible(difference))
     }
 
     override fun getRowMoveType(): Int {
-        return 0
+        return 1
     }
 
     override fun getColMoveType(): Int {
-        return 1
+        return 0
     }
 
     fun changeLimit(newLimit: Int){

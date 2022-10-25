@@ -1,6 +1,5 @@
 package pieces.chessPieces
 
-import edu.austral.dissis.chess.mine.pieces.MoveType
 import pieces.*
 import rules.*
 import rules.moves.DiagonalEatRule

@@ -2,17 +2,17 @@ package rules.moves
 
 import squares.Square
 
-class HorizontalMoveRule(override val limit: Int = 0) : MoveRule {
+class HorizontalMoveRule(override var limit: Int = 0, override var moveType: MoveType = MoveType.ANY) : MoveRule, CommonMoveRule(limit, moveType) {
+
     override fun isMovePossible(sqFrom: Square, sqTo: Square): Boolean {
-        val difference = sqFrom.getRow() - sqTo.getRow()
-        val limitValidation = if (limit == 0) true else (kotlin.math.abs(difference) >= limit)
-        return (sqFrom.getColumn() == sqTo.getColumn() && limitValidation)
+        val difference = sqFrom.getColumn() - sqTo.getColumn()
+        return (sqFrom.getRow() == sqTo.getRow() && super.isMovePossible(difference))
     }
     override fun getRowMoveType(): Int {
-        return 1
+        return 0
     }
 
     override fun getColMoveType(): Int {
-        return 0
+        return 1
     }
 }

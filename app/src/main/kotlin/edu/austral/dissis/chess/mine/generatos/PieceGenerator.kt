@@ -1,8 +1,8 @@
 package generatos
 
-import edu.austral.dissis.chess.mine.pieces.MoveType
 import pieces.*
 import pieces.chessPieces.*
+import rules.moves.MoveType
 
 class PieceGenerator {
     fun createPiece(pieceName: PieceName,pieceColor: PieceColor): Piece{
