@@ -8,10 +8,10 @@ class DiagonalEatRule(override val limit: Int = 0) : MoveRule {
     private val pieceController = PieceController()
     private val diagonalMoveRule = DiagonalMoveRule(limit)
 
-    override fun isMovePossible(sqFrom: Square, sqTo: Square): Boolean {
-        return if (pieceController.getPieceInSquare(sqTo) == null){
+    override fun isMovePossible(sqFrom: Square, sqTo: Square, pieceInSqTo: Piece?): Boolean {
+        return if (pieceInSqTo == null){
             false
-        } else diagonalMoveRule.isMovePossible(sqFrom, sqTo)
+        } else diagonalMoveRule.isMovePossible(sqFrom, sqTo,pieceInSqTo)
     }
 
     override fun getRowMoveType(): Int {

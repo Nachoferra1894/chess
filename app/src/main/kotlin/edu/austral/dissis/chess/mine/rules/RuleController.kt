@@ -19,9 +19,9 @@ class RuleController() {
     private val tieRules: List<EndGameRule> = listOf(stalemateRule)
     private val boardGenerator = BoardGenerator()
 
-    fun checkForCheck(king: King,otherColorPieces: List<Piece>,colorToCheck: PieceColor): Boolean{
+    fun checkForCheck(king: King,otherColorPieces: List<Piece>,allPieces: List<Piece>,sqTo: Square ): Boolean{
         // I create a new board, to check if the move blocks the check
-        return isOnCheckRule.isOnCheck(king,otherColorPieces,colorToCheck)
+        return isOnCheckRule.isOnCheck(king,otherColorPieces,allPieces,sqTo)
     }
     fun checkForTie(king: King,pieces: List<Piece>,colorToCheck: PieceColor): Boolean{
         if (checkMaxKingMoves(king)) return true

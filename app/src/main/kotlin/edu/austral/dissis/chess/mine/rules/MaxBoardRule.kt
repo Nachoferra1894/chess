@@ -7,6 +7,6 @@ class MaxBoardRule {
 
         val col = sq.getColumn()
         val row = sq.getRow()
-        return !(col > cols ||  row > rows || row < 1 || col < 1 )
+        return !(col > cols ||  row > rows || row < 0 || col < 0)
     }
 }

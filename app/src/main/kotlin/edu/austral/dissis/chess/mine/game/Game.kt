@@ -77,22 +77,24 @@ class Game() {
         if (movementValidator.isMoveOutOfBoard(rows, cols, sqTo)) {
             throw IllegalArgumentException("Move out of board!")
         }
+        val eatenPiece = pieceController.getPieceInSquare(sqTo)
         if (!movementValidator.isMovePossible(
                 allPieces,
                 sqFrom,
                 sqTo,
                 pieceToMove.getMovementRules(),
                 pieceToMove.getExtraRules(),
-                pieceToMove.useNoPieceCrashRule()
+                pieceToMove.useNoPieceCrashRule(),
+                eatenPiece
             )
         ) {
             throw IllegalArgumentException("${pieceToMove.getName()} can't move to ${sqTo.getColumn()};${sqTo.getRow()}")
         }
-        val eatenPiece = pieceController.getPieceInSquare(sqTo)
+
 
         // to check if the move avoids the check
         pieceController.movePieceToSquare(sqTo, pieceToMove)
-        if (ruleController.checkForCheck(king,otherColorPieces, playerToMove.getColor())) {
+        if (ruleController.checkForCheck(king,otherColorPieces, allPieces,sqTo)) {
             // If it does not, go back to that square
             pieceController.movePieceToSquare(sqFrom, pieceToMove)
             throw IllegalArgumentException("${playerToMove.getColor()} is on Check")
@@ -101,10 +103,12 @@ class Game() {
             if(eatenPiece.getColor() === pieceToMove.getColor()){
                 pieceController.movePieceToSquare(sqFrom, pieceToMove)
                 throw IllegalArgumentException("The piece in the square is from the same color")
-            } else {
-                eatenPiece.hasBeenEaten()
-            }
+            } else if (eatenPiece.getName() === PieceName.KING) {
+                pieceController.movePieceToSquare(sqFrom, pieceToMove)
+                throw IllegalArgumentException("Can't eat the king!")
+            } else eatenPiece.hasBeenEaten()
         }
+
         if(ruleController.checkForPromotion(pieceToMove,sqTo,rows)){
             pieceController.promotePiece(pieceToMove,PieceName.QUEEN) // TODO maybe add a selector
         }

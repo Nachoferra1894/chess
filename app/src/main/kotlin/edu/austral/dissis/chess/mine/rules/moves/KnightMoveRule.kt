@@ -1,9 +1,10 @@
 package rules.moves
 
+import pieces.Piece
 import squares.Square
 
 class KnightMoveRule(override val limit: Int? = 0) : MoveRule {
-     override fun isMovePossible(sqFrom: Square, sqTo: Square): Boolean {
+     override fun isMovePossible(sqFrom: Square, sqTo: Square, pieceInSqTo: Piece?): Boolean {
          val fromRow = sqFrom.getRow()
          val fromCol = sqFrom.getColumn()
          val toRow = sqTo.getRow()

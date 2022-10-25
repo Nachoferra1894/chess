@@ -4,11 +4,12 @@ import pieces.*
 import rules.*
 import rules.moves.DiagonalEatRule
 import rules.moves.MoveRule
+import rules.moves.MoveType
 import rules.moves.VerticalMoveRule
 import squares.Square
 
-class Pawn(color: PieceColor): Piece, CommonPiece(color) {
-    private val verticalMoveRule = VerticalMoveRule(2)
+class Pawn(color: PieceColor,moveType: MoveType): Piece, CommonPiece(color) {
+    private val verticalMoveRule = VerticalMoveRule(2,moveType)
     private val diagonalEatRule = DiagonalEatRule(1)
     private val passantCaptureRule = PassantCaptureRule()
 
