@@ -1,6 +1,5 @@
 package rules.moves
 
-import squares.Board
 import squares.Square
 
 class HorizontalMoveRule(override val limit: Int = 0) : MoveRule {

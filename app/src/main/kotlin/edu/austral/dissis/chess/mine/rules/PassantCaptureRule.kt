@@ -5,7 +5,7 @@ import squares.Square
 
 class PassantCaptureRule: ExtraRule {
     override fun isMovePossible(sqFrom: Square, sqTo: Square,pieces: List<Piece>): Boolean {
-        TODO("Not yet implemented")
+        return false // TODO
     }
 
     override fun getRowMoveType(): Int {

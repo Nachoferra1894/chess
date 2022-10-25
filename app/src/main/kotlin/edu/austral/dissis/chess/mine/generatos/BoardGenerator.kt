@@ -8,17 +8,17 @@ import squares.Square
 import java.util.*
 
 class BoardGenerator {
-    fun createBoard(columns: Int,rows: Int,pieces: List<Piece>){
+    fun createBoard(rows: Int,cols: Int,pieces: List<Piece>){
         var whitePieceQueue: MutableList<Piece> = pieces.filter { it.getColor() === PieceColor.WHITE }.toMutableList()
         var blackPieceQueue: MutableList<Piece> = pieces.filter { it.getColor() === PieceColor.BLACK }.toMutableList()
 
 
         // I assume that both players play with the same set of pieces
-        whitePieceQueue = addCommonPieces(0,whitePieceQueue)
-        whitePieceQueue = addPawns(1,whitePieceQueue)
+        whitePieceQueue = addCommonPieces(cols,0,whitePieceQueue)
+        whitePieceQueue = addPawns(cols,1,whitePieceQueue)
 
-        blackPieceQueue = addPawns(6,blackPieceQueue)
-        blackPieceQueue = addCommonPieces(7,blackPieceQueue)
+        blackPieceQueue = addPawns(cols,6,blackPieceQueue)
+        blackPieceQueue = addCommonPieces(cols,7,blackPieceQueue)
 
         if (whitePieceQueue.size + blackPieceQueue.size > 0){
             println("Piece error!")
@@ -26,8 +26,8 @@ class BoardGenerator {
 
     }
 
-    private fun addCommonPieces(row: Int,pieceSet: MutableList<Piece>):  MutableList<Piece>{
-        for (i in 0 until row ){
+    private fun addCommonPieces(cols: Int,row: Int,pieceSet: MutableList<Piece>):  MutableList<Piece>{
+        for (i in 0 until cols ){
             val movePiece = pieceSet.find {
                 val pieceName = it.getName()
                 when(i) {
@@ -59,8 +59,8 @@ class BoardGenerator {
         return pieceSet
     }
 
-    private fun addPawns(row: Int,pieceSet: MutableList<Piece>): MutableList<Piece> {
-        for (i in 0 until row ){
+    private fun addPawns(cols: Int,row: Int,pieceSet: MutableList<Piece>): MutableList<Piece> {
+        for (i in 0 until cols ){
             val movePiece = pieceSet.find {
                 it.getName() === PieceName.PAWN
             }

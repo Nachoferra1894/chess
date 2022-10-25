@@ -3,16 +3,8 @@ package rules
 import pieces.Piece
 import squares.Square
 
-class PromoteRule: ExtraRule {
-    override fun isMovePossible(sqFrom: Square, sqTo: Square, pieces: List<Piece>): Boolean {
+class PromoteRule {
+    fun isMovePossible(sqFrom: Square, sqTo: Square, pieces: List<Piece>): Boolean {
         TODO("Not yet implemented")
-    }
-
-    override fun getRowMoveType(): Int {
-        return 1
-    }
-
-    override fun getColMoveType(): Int {
-        return 0
     }
 }

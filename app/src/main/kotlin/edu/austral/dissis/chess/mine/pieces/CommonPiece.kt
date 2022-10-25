@@ -14,10 +14,11 @@ abstract class CommonPiece(private val color: PieceColor) {
         return this.color
     }
     fun getId(): String{
-        return this.hashCode().toString()
+        return System.identityHashCode(this).toString()
     }
     fun hasBeenEaten() {
         this.isAlive = false
+        this.position = null
     }
     fun isActive(): Boolean {
         return this.isAlive
@@ -35,9 +36,6 @@ abstract class CommonPiece(private val color: PieceColor) {
 
     fun resetMoves(){
         movesCount = 1;
-    }
-    open fun addMove(){
-        movesCount++;
     }
     open fun useNoPieceCrashRule(): Boolean{
         return true

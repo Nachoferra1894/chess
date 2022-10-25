@@ -15,8 +15,15 @@ class PieceController {
         PieceName.ROOK to 2,
         PieceName.BISHOP to 2,
         PieceName.KNIGHT to 2)
-    private lateinit var pieces: List<Piece>
+    private var pieces: MutableList<Piece> = mutableListOf()
     private val pieceGenerator: PieceGenerator = PieceGenerator()
+
+    constructor(){
+    }
+
+    constructor(pieces: List<Piece>){
+        this.pieces = pieces.toMutableList()
+    }
 
     fun generatePieces(player1Color: PieceColor, player2Color: PieceColor): List<Piece> {
         val thisPieces: MutableList<Piece> = mutableListOf();
@@ -26,6 +33,8 @@ class PieceController {
                 thisPieces.add(pieceGenerator.createPiece(key, player2Color))
             }
         }
+        pieces = thisPieces;
+
         return thisPieces
     }
 
@@ -37,7 +46,7 @@ class PieceController {
     fun getPieceInSquare(sq: Square): Piece? {
         return pieces.find {
             val pos = it.getPosition()
-            ((pos?.getRow() ?: false) === sq.getRow()) && ((pos?.getRow() ?: false) === sq.getColumn());
+            ((pos?.getRow() ?: false) === sq.getRow()) && ((pos?.getColumn() ?: false) === sq.getColumn());
         }
     }
 
@@ -54,6 +63,10 @@ class PieceController {
 
     fun getPiecesNotFromColor(color: PieceColor): List<Piece> {
         return pieces.filter { it.getColor() !== color }
+    }
+
+    fun promotePiece(pieceToMove: Piece, newPiece: PieceName) {
+        pieces[pieces.indexOf(pieceToMove)] = pieceGenerator.promotePiece(pieceToMove,newPiece)
     }
 
 }

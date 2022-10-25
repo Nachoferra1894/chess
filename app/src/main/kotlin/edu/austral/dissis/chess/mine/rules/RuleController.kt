@@ -3,11 +3,13 @@ package rules
 import generatos.BoardGenerator
 import pieces.Piece
 import pieces.PieceColor
+import pieces.PieceName
 import pieces.chessPieces.King
 import rules.end.CheckMateRule
 import rules.end.EndGameRule
 import rules.end.FiftyKingMovesRule
 import rules.end.StalemateRule
+import squares.Square
 
 class RuleController() {
     private val isOnCheckRule = IsOnCheckRule()
@@ -19,7 +21,7 @@ class RuleController() {
 
     fun checkForCheck(king: King,otherColorPieces: List<Piece>,colorToCheck: PieceColor): Boolean{
         // I create a new board, to check if the move blocks the check
-        return !isOnCheckRule.isMovePossible(king,otherColorPieces,colorToCheck)
+        return isOnCheckRule.isOnCheck(king,otherColorPieces,colorToCheck)
     }
     fun checkForTie(king: King,pieces: List<Piece>,colorToCheck: PieceColor): Boolean{
         if (checkMaxKingMoves(king)) return true
@@ -33,5 +35,12 @@ class RuleController() {
     }
     fun checkForCheckMate(pieces: List<Piece>,colorToCheck: PieceColor): Boolean {
         return checkMateRule.hasGameFinished(pieces,colorToCheck)
+    }
+
+    fun checkForPromotion(pieceToMove: Piece, sqTo: Square,maxRows: Int): Boolean {
+        if(pieceToMove.getName() === PieceName.PAWN && (sqTo.getRow() === maxRows || sqTo.getRow() === 0)){
+            return true
+        }
+        return false
     }
 }

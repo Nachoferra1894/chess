@@ -88,6 +88,8 @@ class Game() {
         ) {
             throw IllegalArgumentException("${pieceToMove.getName()} can't move to ${sqTo.getColumn()}${sqTo.getRow()}")
         }
+        val eatenPiece = pieceController.getPieceInSquare(sqTo)
+
         // to check if the move avoids the check
         pieceController.movePieceToSquare(sqTo, pieceToMove)
         if (ruleController.checkForCheck(king,otherColorPieces, playerToMove.getColor())) {
@@ -95,14 +97,21 @@ class Game() {
             pieceController.movePieceToSquare(sqFrom, pieceToMove)
             throw IllegalArgumentException("${playerToMove.getColor()} is on Check")
         }
+        if (eatenPiece !== null){
+            if(eatenPiece.getColor() === pieceToMove.getColor()){
+                pieceController.movePieceToSquare(sqFrom, pieceToMove)
+                throw IllegalArgumentException("The piece in the square is from the same color")
+            } else {
+                eatenPiece.hasBeenEaten()
+            }
+        }
+        if(ruleController.checkForPromotion(pieceToMove,sqTo,rows)){
+            pieceController.promotePiece(pieceToMove,PieceName.QUEEN) // TODO maybe add a selector
+        }
         val nextPlayerToMove = players[turnController.changePlayerTurn()]
         val nextKing: King = pieceController.getKingPosition(nextPlayerToMove.getColor());
         if (pieceToMove.getName() === PieceName.PAWN){
             nextKing.resetMoves()
-        }
-        val eatenPiece = pieceController.getPieceInSquare(sqTo)
-        if (eatenPiece !== null) {
-            eatenPiece.hasBeenEaten()
         }
 
         if (ruleController.checkForTie(nextKing,allPieces, nextPlayerToMove.getColor())) {
