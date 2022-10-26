@@ -5,6 +5,7 @@ import pieces.Piece
 import pieces.PieceColor
 import pieces.PieceName
 import pieces.chessPieces.King
+import squares.PositionSquare
 import squares.Square
 
 class PieceController {
@@ -67,6 +68,31 @@ class PieceController {
 
     fun promotePiece(pieceToMove: Piece, newPiece: PieceName) {
         pieces[pieces.indexOf(pieceToMove)] = pieceGenerator.promotePiece(pieceToMove,newPiece)
+    }
+
+    fun getPiecesFromColor(color: PieceColor): List<Piece> {
+        return pieces.filter { it.getColor() === color }
+    }
+
+    fun getKingPossiblePositions(nextKing: King): List<Square> {
+        val possibleMoves: MutableList<Square> = mutableListOf()
+        val row: Int? = nextKing.getPosition()?.getRow()
+        val col: Int? = nextKing.getPosition()?.getColumn()
+        val possibleMovesArray = listOf(-1, 0, 1)
+
+        if (row != null && col != null){
+            for (i in possibleMovesArray) {
+                for (j in possibleMovesArray) {
+                    if (j != 0 || i != 0){
+                        possibleMoves.add(PositionSquare(row + i, col + j))
+                    }
+
+                }
+            }
+            println(possibleMoves)
+            return possibleMoves;
+        }
+        return emptyList()
     }
 
 }

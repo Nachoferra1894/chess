@@ -9,9 +9,6 @@ class CustomGameEngine: GameEngine {
     override fun applyMove(move: Move): MoveResult {
         return try {
             classicGame.move(move)
-            println(classicGame.getPieces())
-            println(classicGame.nextMove())
-            NewGameState(classicGame.getPieces(),classicGame.nextMove())
         }catch (e: Exception){
             InvalidMove(e.message!!)
         }

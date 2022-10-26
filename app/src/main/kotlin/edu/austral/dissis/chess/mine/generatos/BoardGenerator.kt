@@ -40,10 +40,10 @@ class BoardGenerator {
                     2,5-> {
                         pieceName === PieceName.BISHOP
                     }
-                    3 -> {
+                    4 -> {
                         pieceName === PieceName.KING
                     }
-                    4 -> {
+                    3 -> {
                         pieceName === PieceName.QUEEN
                     }
                     else -> {

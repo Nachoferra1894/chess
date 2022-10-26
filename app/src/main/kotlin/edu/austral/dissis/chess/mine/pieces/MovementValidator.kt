@@ -9,7 +9,16 @@ import squares.Square
 class MovementValidator {
     private val maxBoardRule = MaxBoardRule()
     private val noPieceCrashRule = NoPieceCrashRule()
-    fun isMovePossible(pieces: List<Piece>,sqFrom: Square,sqTo: Square,moveRules: List<MoveRule>,extraRules: List<ExtraRule>,noPieceCrash: Boolean,eatenPiece: Piece? = null): Boolean{
+    fun isMovePossible(pieces: List<Piece>,sqFrom: Square,sqTo: Square,pieceToMove: Piece,eatenPiece: Piece? = null): Boolean{
+        val moveRules = pieceToMove.getMovementRules()
+        val extraRules = pieceToMove.getExtraRules()
+        val noPieceCrash = pieceToMove.useNoPieceCrashRule()
+        val noPieceCollide = pieceToMove.useNoPieceCollide()
+        if (noPieceCollide){
+            if (eatenPiece !== null && eatenPiece.getColor() === pieceToMove.getColor()){
+                return false
+            }
+        }
         for (rule in moveRules){
             if(rule.isMovePossible(sqFrom, sqTo,eatenPiece)){
                 return if (noPieceCrash){

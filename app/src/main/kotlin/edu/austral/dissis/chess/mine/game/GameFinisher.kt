@@ -1,15 +1,7 @@
 package game
 
-import players.Player
-import kotlin.system.exitProcess
+import edu.austral.dissis.chess.gui.PlayerColor
+import pieces.PieceColor
 
-class GameFinisher {
-    fun finishGameInTie(){
-        println("The Game finished in a Tie!")
-        exitProcess(0)
-    }
-    fun  finishGame(player: Player){
-        println("Player ${player.getName()} has won!")
-        exitProcess(0)
-    }
+class GameFinisher(val hasGameFinished: Boolean, val winner: PieceColor? = null){
 }

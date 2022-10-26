@@ -14,6 +14,7 @@ interface Piece {
     fun getMovementRules(): List<MoveRule>
     fun getExtraRules(): List<ExtraRule>
     fun useNoPieceCrashRule(): Boolean
+    fun useNoPieceCollide(): Boolean
     fun getMoveCount(): Int
     fun makeMove(sq: Square)
     fun resetMoves()

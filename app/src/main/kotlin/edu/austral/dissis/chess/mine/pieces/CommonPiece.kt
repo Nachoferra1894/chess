@@ -40,6 +40,9 @@ abstract class CommonPiece(private val color: PieceColor) {
     open fun useNoPieceCrashRule(): Boolean{
         return true
     }
+    open fun useNoPieceCollide(): Boolean{
+        return true
+    }
     open fun getExtraRules(): List<ExtraRule> {
         return emptyList()
     }

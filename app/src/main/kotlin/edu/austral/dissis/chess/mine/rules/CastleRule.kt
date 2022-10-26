@@ -11,8 +11,7 @@ class CastleRule: ExtraRule {
 //        }
 //        val rook: Rook? = board.getCastleNearestRook(sqTo,fromPiece.getColor())
 //        if(rook == null || rook.getMoveCount() > 0) return false
-//        return true
-        TODO()
+        return false
     }
 
     override fun getRowMoveType(): Int {
