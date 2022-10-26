@@ -84,7 +84,7 @@ class Game() {
                 eatenPiece
             )
         ) {
-            throw IllegalArgumentException("${pieceToMove.getName()} can't move to ${sqTo.getColumn()};${sqTo.getRow()}")
+            throw IllegalArgumentException("${pieceToMove.getName()} can't move to ${sqTo.getColumn()}:${sqTo.getRow()}")
         }
 
 

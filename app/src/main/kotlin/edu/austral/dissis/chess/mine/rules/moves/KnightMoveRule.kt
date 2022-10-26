@@ -13,7 +13,7 @@ class KnightMoveRule(override val limit: Int? = 0) : MoveRule {
          val xMoves = intArrayOf(2, 1, -1, -2, -2, -1, 1, 2)
          val yMoves = intArrayOf(1, 2, 2, 1, -1, -2, -2, -1)
 
-         for(i in 0 until xMoves.size-1){
+         for(i in xMoves.indices){
              if (fromRow + xMoves[i] == toRow && fromCol + yMoves[i] == toCol) {
                  return true
              }
