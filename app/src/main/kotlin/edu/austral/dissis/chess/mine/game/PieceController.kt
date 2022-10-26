@@ -89,7 +89,6 @@ class PieceController {
 
                 }
             }
-            println(possibleMoves)
             return possibleMoves;
         }
         return emptyList()

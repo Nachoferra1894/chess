@@ -1,6 +1,7 @@
 package rules
 
 import generatos.BoardGenerator
+import pieces.MovementValidator
 import pieces.Piece
 import pieces.PieceColor
 import pieces.PieceName
@@ -11,16 +12,16 @@ import rules.end.StalemateRule
 import squares.Square
 
 class RuleController() {
-    private val isOnCheckRule = IsOnCheckRule()
+    private val piecePointerRule = PiecePointer()
     private val fiftyKingMovesRule = FiftyKingMovesRule()
     private val stalemateRule = StalemateRule()
     private val tieRules: List<EndGameRule> = listOf(stalemateRule)
-    private val boardGenerator = BoardGenerator()
+    private val movementValidator = MovementValidator()
 
     fun checkForCheck(king: King,otherColorPieces: List<Piece>,allPieces: List<Piece>,eatenPiece: Piece? = null): Boolean{
         // I create a new board, to check if the move blocks the check
         val kingPos: Square = king.getPosition() ?: throw IllegalArgumentException("King not in board")
-        return isOnCheckRule.isOnCheck(kingPos,otherColorPieces,allPieces,eatenPiece) !== null
+        return piecePointerRule.isPiecePointedBy(kingPos,otherColorPieces,allPieces,eatenPiece) !== null
     }
     fun checkForTie(king: King,pieces: List<Piece>,colorToCheck: PieceColor): Boolean{
         if (checkMaxKingMoves(king)) return true
@@ -32,14 +33,27 @@ class RuleController() {
     private fun checkMaxKingMoves(king: King): Boolean{
         return fiftyKingMovesRule.hasGameFinished(king)
     }
-    fun checkForCheckMate(kingPos: Square,otherColorPieces: List<Piece>,allPieces: List<Piece>,eatenPiece: Piece? = null): Boolean {
-        val pieceThatChecks = isOnCheckRule.isOnCheck(kingPos,otherColorPieces,allPieces,eatenPiece)
-        if (pieceThatChecks === null || pieceThatChecks.getPosition() === null){
-            return false
-        } else {
-            val thisColorPieces = allPieces.filter { otherColorPieces.indexOf(it) == -1 && it.getPosition().getRow() !== pieceThatChecks.getPosition().getRow() }
-            return (isOnCheckRule.isOnCheck(pieceThatChecks.getPosition()!!,thisColorPieces,allPieces,eatenPiece) !== null)
+    fun checkForCheckMate(king: King,otherColorPieces: List<Piece>,allPieces: List<Piece>,kingPossibleMoves: List<Square>): Boolean {
+        val kingPos = king.getPosition() ?: return false
+        val pieceThatChecks = piecePointerRule.isPiecePointedBy(kingPos,otherColorPieces,allPieces) ?: return false
+        val pieceThatChecksPos = pieceThatChecks.getPosition()
+
+        if (pieceThatChecksPos !== null) {
+            // Check if the king can move
+            if (!kingPossibleMoves.all {
+                    piecePointerRule.isPiecePointedBy(it,otherColorPieces,allPieces) !== null
+            }) return false
+
+            // If the king can eat the piece, it has to be defended
+            if (piecePointerRule.isPiecePointedBy(pieceThatChecksPos, listOf(king),allPieces) !== null) {
+                if (piecePointerRule.isPiecePointedBy(pieceThatChecksPos,otherColorPieces,allPieces) === null){
+                    return false
+                }
+            }
+            return true
         }
+        return false
+
     }
 
     fun checkForPromotion(pieceToMove: Piece, sqTo: Square,maxRows: Int): Boolean {

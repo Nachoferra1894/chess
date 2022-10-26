@@ -110,28 +110,20 @@ class Game() {
         }
         val nextPlayerToMove = players[turnController.changePlayerTurn()]
         val nextKing: King = pieceController.getKingPosition(nextPlayerToMove.getColor());
-        val kingPossiblePositions: List<Square> = pieceController.getKingPossiblePositions(nextKing)
+        val kingPossiblePositions: List<Square> = pieceController.getKingPossiblePositions(nextKing).filter {
+            !movementValidator.isMoveOutOfBoard(rows,cols,it) && pieceController.getPieceInSquare(it) === null
+        }
         if (pieceToMove.getName() === PieceName.PAWN) {
             nextKing.resetMoves()
         }
+
 
         val thisColorPieces: List<Piece> = pieceController.getPiecesFromColor(playerToMove.getColor());
         if (ruleController.checkForTie(nextKing, allPieces, nextPlayerToMove.getColor())) {
             return GameFinisher(true,null)
         }
         val kingPos = nextKing.getPosition()
-        if (
-            kingPos != null && ruleController.checkForCheck(nextKing,thisColorPieces,allPieces,null) && kingPossiblePositions.all { sq: Square ->
-                movementValidator.isMoveOutOfBoard(rows, cols, sq) ||
-                !movementValidator.isMovePossible(
-                    allPieces,
-                    kingPos,
-                    sq,
-                    nextKing,
-                    pieceController.getPieceInSquare(sq)
-                )
-                        || ruleController.checkForCheckMate(sq, otherColorPieces, allPieces,null)
-            }) {
+        if (ruleController.checkForCheckMate(nextKing,thisColorPieces,allPieces,kingPossiblePositions)){
             return GameFinisher(true,playerToMove.getColor())
         }
         return GameFinisher(false)
