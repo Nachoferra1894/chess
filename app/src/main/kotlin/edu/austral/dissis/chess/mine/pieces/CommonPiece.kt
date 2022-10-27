@@ -1,6 +1,5 @@
 package pieces
 
-import rules.ExtraRule
 import squares.Square
 
 abstract class CommonPiece(private val color: PieceColor) {
@@ -43,8 +42,4 @@ abstract class CommonPiece(private val color: PieceColor) {
     open fun useNoPieceCollide(): Boolean{
         return true
     }
-    open fun getExtraRules(): List<ExtraRule> {
-        return emptyList()
-    }
-
 }

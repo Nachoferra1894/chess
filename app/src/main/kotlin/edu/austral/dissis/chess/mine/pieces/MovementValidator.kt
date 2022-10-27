@@ -1,17 +1,19 @@
 package pieces
 
-import rules.ExtraRule
+import pieces.chessPieces.Rook
 import rules.MaxBoardRule
 import rules.NoPieceCrashRule
-import rules.moves.MoveRule
+import rules.moves.HorizontalMoveRule
+import rules.moves.VerticalMoveRule
+import squares.PositionSquare
 import squares.Square
+import kotlin.math.abs
 
 class MovementValidator {
     private val maxBoardRule = MaxBoardRule()
     private val noPieceCrashRule = NoPieceCrashRule()
     fun isMovePossible(pieces: List<Piece>,sqFrom: Square,sqTo: Square,pieceToMove: Piece,eatenPiece: Piece? = null): Boolean{
         val moveRules = pieceToMove.getMovementRules()
-        val extraRules = pieceToMove.getExtraRules()
         val noPieceCrash = pieceToMove.useNoPieceCrashRule()
         val noPieceCollide = pieceToMove.useNoPieceCollide()
         if (noPieceCollide){
@@ -26,16 +28,26 @@ class MovementValidator {
                 } else true
             }
         }
-        for (rule in extraRules){
-            if(rule.isMovePossible(sqFrom,sqTo,pieces)){
-                return if (noPieceCrash){
-                    noPieceCrashRule.isMovePossible(sqFrom,sqTo,rule,pieces)
-                } else true
-            }
-        }
+
         return false
     }
     fun isMoveOutOfBoard(rows: Int,cols: Int, sqTo: Square): Boolean{
         return !maxBoardRule.isMovePossible(rows,cols,sqTo)
+    }
+
+    fun checkForCastle(allPieces: List<Piece>, sqFrom: Square, sqTo: Square, pieceToMove: Piece, rookForCastle: Rook): Square? {
+        if (pieceToMove.getMoveCount() > 1 || rookForCastle.getMoveCount() > 1){
+            return null
+        }
+        if (abs(sqFrom.getColumn() - sqTo.getColumn()) <2){
+            return null
+        }
+        val horizontalMoveRule = HorizontalMoveRule(2)
+        if (noPieceCrashRule.isMovePossible(sqFrom,sqTo,horizontalMoveRule,allPieces)){
+            val sqCol = sqTo.getColumn()
+            val col = if (pieceToMove.getPosition()?.getColumn()!! > sqCol) sqCol + 1 else sqCol - 1
+            return PositionSquare(sqTo.getRow(),col)
+        }
+        return null
     }
 }

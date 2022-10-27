@@ -1,7 +1,6 @@
 package pieces
 
 import edu.austral.dissis.chess.gui.ChessPiece
-import rules.ExtraRule
 import rules.moves.MoveRule
 import squares.Square
 
@@ -12,7 +11,6 @@ interface Piece {
     fun getName(): PieceName
     fun getColor(): PieceColor
     fun getMovementRules(): List<MoveRule>
-    fun getExtraRules(): List<ExtraRule>
     fun useNoPieceCrashRule(): Boolean
     fun useNoPieceCollide(): Boolean
     fun getMoveCount(): Int

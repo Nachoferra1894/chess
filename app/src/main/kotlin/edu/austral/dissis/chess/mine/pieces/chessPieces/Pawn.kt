@@ -14,7 +14,6 @@ class Pawn(color: PieceColor,moveType: MoveType): Piece, CommonPiece(color) {
     private val passantCaptureRule = PassantCaptureRule()
 
     private val rules: List<MoveRule> = listOf(verticalMoveRule,diagonalEatRule)
-    private val extraRules: List<ExtraRule> = listOf(passantCaptureRule)
 
     override fun getName(): PieceName {
         return PieceName.PAWN
@@ -29,10 +28,6 @@ class Pawn(color: PieceColor,moveType: MoveType): Piece, CommonPiece(color) {
             verticalMoveRule.changeLimit(1)
         }
         super.makeMove(sq)
-    }
-
-    override fun getExtraRules(): List<ExtraRule> {
-        return extraRules
     }
 
 }

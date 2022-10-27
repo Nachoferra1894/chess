@@ -5,31 +5,33 @@ import pieces.Piece
 import pieces.PieceColor
 import pieces.PieceName
 import pieces.chessPieces.King
+import pieces.chessPieces.Rook
 import squares.PositionSquare
 import squares.Square
 
 class PieceController {
-    private val pieceNames: HashMap<PieceName,Int> = hashMapOf(
+    private val pieceNames: HashMap<PieceName, Int> = hashMapOf(
         PieceName.KING to 1,
         PieceName.QUEEN to 1,
         PieceName.PAWN to 8,
         PieceName.ROOK to 2,
         PieceName.BISHOP to 2,
-        PieceName.KNIGHT to 2)
+        PieceName.KNIGHT to 2
+    )
     private var pieces: MutableList<Piece> = mutableListOf()
     private val pieceGenerator: PieceGenerator = PieceGenerator()
 
-    constructor(){
+    constructor() {
     }
 
-    constructor(pieces: List<Piece>){
+    constructor(pieces: List<Piece>) {
         this.pieces = pieces.toMutableList()
     }
 
     fun generatePieces(player1Color: PieceColor, player2Color: PieceColor): List<Piece> {
         val thisPieces: MutableList<Piece> = mutableListOf();
-        for ((key,value) in pieceNames) {
-            for (i in 1..value){
+        for ((key, value) in pieceNames) {
+            for (i in 1..value) {
                 thisPieces.add(pieceGenerator.createPiece(key, player1Color))
                 thisPieces.add(pieceGenerator.createPiece(key, player2Color))
             }
@@ -67,7 +69,7 @@ class PieceController {
     }
 
     fun promotePiece(pieceToMove: Piece, newPiece: PieceName) {
-        pieces[pieces.indexOf(pieceToMove)] = pieceGenerator.promotePiece(pieceToMove,newPiece)
+        pieces[pieces.indexOf(pieceToMove)] = pieceGenerator.promotePiece(pieceToMove, newPiece)
     }
 
     fun getPiecesFromColor(color: PieceColor): List<Piece> {
@@ -80,10 +82,10 @@ class PieceController {
         val col: Int? = nextKing.getPosition()?.getColumn()
         val possibleMovesArray = listOf(-1, 0, 1)
 
-        if (row != null && col != null){
+        if (row != null && col != null) {
             for (i in possibleMovesArray) {
                 for (j in possibleMovesArray) {
-                    if (j != 0 || i != 0){
+                    if (j != 0 || i != 0) {
                         possibleMoves.add(PositionSquare(row + i, col + j))
                     }
 
@@ -92,6 +94,28 @@ class PieceController {
             return possibleMoves;
         }
         return emptyList()
+    }
+
+    fun getCastleNearestRook(piece: Piece, sqTo: Square, maxRows: Int, maxCols: Int): Rook? {
+        if (piece.getName() === PieceName.KING) {
+            val kingColor = piece.getColor()
+            if (sqTo.getRow() == 0 || sqTo.getRow() == maxCols - 1) {
+                for (i in 1..Math.ceilDiv(maxRows, 2)) {
+                    val nextPos = PositionSquare(sqTo.getRow(), sqTo.getColumn() + i)
+                    val prevPos = PositionSquare(sqTo.getRow(), sqTo.getColumn() - i)
+                    val nextRook: Piece? = getPieceInSquare(nextPos)
+                    val prevRook: Piece? = getPieceInSquare(prevPos)
+
+                    if (nextRook != null && nextRook.getName() === PieceName.ROOK && nextRook.getColor() === kingColor) {
+                        return nextRook as Rook?
+                    }
+                    if (prevRook != null && prevRook.getName() === PieceName.ROOK && prevRook.getColor() === kingColor) {
+                        return prevRook as Rook?
+                    }
+                }
+            }
+        }
+        return null
     }
 
 }
