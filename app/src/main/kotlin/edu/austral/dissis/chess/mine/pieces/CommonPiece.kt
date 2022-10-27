@@ -2,7 +2,7 @@ package pieces
 
 import squares.Square
 
-abstract class CommonPiece(private val color: PieceColor) {
+abstract class CommonPiece(private val color: PieceColor,private val id: String) {
     private var isAlive: Boolean = true
     private var position: Square? = null
 
@@ -13,7 +13,7 @@ abstract class CommonPiece(private val color: PieceColor) {
         return this.color
     }
     fun getId(): String{
-        return System.identityHashCode(this).toString()
+        return this.id
     }
     fun hasBeenEaten() {
         this.isAlive = false

@@ -7,7 +7,7 @@ import rules.moves.MoveRule
 import rules.moves.VerticalMoveRule
 import squares.Square
 
-class Queen(color: PieceColor): Piece, CommonPiece(color) {
+class Queen(color: PieceColor,id: String): Piece, CommonPiece(color,id) {
     private val verticalMoveRule = VerticalMoveRule()
     private val horizontalMoveRule = HorizontalMoveRule()
     private val diagonalMoveRule = DiagonalMoveRule()

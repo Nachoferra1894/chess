@@ -30,12 +30,16 @@ class PieceController {
 
     fun generatePieces(player1Color: PieceColor, player2Color: PieceColor): List<Piece> {
         val thisPieces: MutableList<Piece> = mutableListOf();
+        var index = 0
         for ((key, value) in pieceNames) {
             for (i in 1..value) {
-                thisPieces.add(pieceGenerator.createPiece(key, player1Color))
-                thisPieces.add(pieceGenerator.createPiece(key, player2Color))
+                val pieceId = "${key.toString().slice(0..2)}:${index}:${i}"
+                thisPieces.add(pieceGenerator.createPiece(key, player1Color,"${player1Color}${pieceId}"))
+                thisPieces.add(pieceGenerator.createPiece(key, player2Color,"${player2Color}${pieceId}"))
             }
+            index++;
         }
+
         pieces = thisPieces;
 
         return thisPieces
@@ -59,9 +63,12 @@ class PieceController {
     }
 
     fun getKingPosition(pieceColor: PieceColor): King {
-        return pieces.find {
+        val king: Piece? = pieces.find {
             it.getName() === PieceName.KING && it.getColor() === pieceColor
-        } as King
+        }
+        if (king === null){
+            throw IllegalArgumentException("King not in board!")
+        } else return king as King
     }
 
     fun getPiecesNotFromColor(color: PieceColor): List<Piece> {

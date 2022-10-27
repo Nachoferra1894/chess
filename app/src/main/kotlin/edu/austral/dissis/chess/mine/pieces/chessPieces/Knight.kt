@@ -3,7 +3,7 @@ package pieces.chessPieces
 import pieces.*
 import rules.moves.*
 
-class Knight(color: PieceColor): Piece, CommonPiece(color) {
+class Knight(color: PieceColor,id: String): Piece, CommonPiece(color,id) {
     private val knightMoveRule = KnightMoveRule()
 
     private val rules: List<MoveRule> = listOf(knightMoveRule)

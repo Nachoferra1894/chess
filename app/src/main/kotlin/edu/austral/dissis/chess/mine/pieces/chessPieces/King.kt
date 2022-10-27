@@ -8,7 +8,7 @@ import rules.moves.HorizontalMoveRule
 import rules.moves.MoveRule
 import rules.moves.VerticalMoveRule
 
-class King(color: PieceColor): Piece, CommonPiece(color) {
+class King(color: PieceColor,id: String): Piece, CommonPiece(color,id) {
     private val noPieceCrash = NoPieceCrashRule()
     private val verticalMoveRule = VerticalMoveRule(1)
     private val diagonalMoveRule = DiagonalMoveRule(1)

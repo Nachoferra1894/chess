@@ -57,7 +57,7 @@ class RuleController() {
     }
 
     fun checkForPromotion(pieceToMove: Piece, sqTo: Square,maxRows: Int): Boolean {
-        if(pieceToMove.getName() === PieceName.PAWN && (sqTo.getRow() === maxRows || sqTo.getRow() === 0)){
+        if(pieceToMove.getName() === PieceName.PAWN && (sqTo.getRow() == maxRows - 1 || sqTo.getRow() == 0)){
             return true
         }
         return false
