@@ -57,7 +57,7 @@ class Game() {
     }
 
     fun movePiece(sqFrom: Square, sqTo: Square): GameFinisher {
-        if (sqFrom === sqTo) {
+        if (sqFrom.getColumn() == sqTo.getColumn() && sqFrom.getRow() == sqTo.getRow()) {
             throw IllegalArgumentException("Can't move to the same square")
         }
 
@@ -65,10 +65,6 @@ class Game() {
 
         val pieceToMove =
             pieceController.getPieceInSquare(sqFrom) ?: throw IllegalArgumentException("Square doesn't have a piece")
-        val allPieces = pieceController.getPieces();
-        val otherColorPieces = pieceController.getPiecesNotFromColor(playerToMove.getColor());
-
-        val king: King = pieceController.getKingPosition(playerToMove.getColor());
 
         if (pieceToMove.getColor() !== playerToMove.getColor()) {
             throw IllegalArgumentException("Piece not from that color")
@@ -76,6 +72,12 @@ class Game() {
         if (movementValidator.isMoveOutOfBoard(rows, cols, sqTo)) {
             throw IllegalArgumentException("Move out of board!")
         }
+
+        val allPieces = pieceController.getPieces();
+        val otherColorPieces = pieceController.getPiecesNotFromColor(playerToMove.getColor());
+
+        val king: King = pieceController.getKingPosition(playerToMove.getColor());
+
         val eatenPiece = pieceController.getPieceInSquare(sqTo)
         var castlePosition: Square? = null
         val rookForCastle: Rook? = pieceController.getCastleNearestRook(pieceToMove, sqTo, rows, cols)
@@ -99,9 +101,7 @@ class Game() {
             throw IllegalArgumentException("${pieceToMove.getName()} can't move to ${sqTo.getColumn()}:${sqTo.getRow()}")
         }
 
-
         // to check if the move avoids the check
-
         if(castlePosition === null) pieceController.movePieceToSquare(sqTo, pieceToMove)
         // Because the castling can't avoid the check
         if (ruleController.checkForCheck(king, otherColorPieces, allPieces, eatenPiece)) {
@@ -114,10 +114,7 @@ class Game() {
             pieceController.movePieceToSquare(castlePosition, rookForCastle)
         }
         if (eatenPiece !== null) {
-            if (eatenPiece.getColor() === pieceToMove.getColor()) {
-                pieceController.movePieceToSquare(sqFrom, pieceToMove)
-                throw IllegalArgumentException("The piece in the square is from the same color")
-            } else if (eatenPiece.getName() === PieceName.KING) {
+            if (eatenPiece.getName() === PieceName.KING) {
                 pieceController.movePieceToSquare(sqFrom, pieceToMove)
                 throw IllegalArgumentException("Can't eat the king!")
             } else eatenPiece.hasBeenEaten()
@@ -128,14 +125,19 @@ class Game() {
         }
         val nextPlayerToMove = players[turnController.changePlayerTurn()]
         val nextKing: King = pieceController.getKingPosition(nextPlayerToMove.getColor());
-        val kingPossiblePositions: List<Square> = pieceController.getKingPossiblePositions(nextKing).filter {
-            !movementValidator.isMoveOutOfBoard(rows, cols, it) && pieceController.getPieceInSquare(it) === null
-        }
+
         if (pieceToMove.getName() === PieceName.PAWN) {
             nextKing.resetMoves()
         }
+        return endGameChecker(nextKing,allPieces,nextPlayerToMove,playerToMove)
 
+    }
 
+    fun endGameChecker (nextKing: King, allPieces: List<Piece>, nextPlayerToMove: Player,playerToMove: Player,): GameFinisher {
+        val kingPossiblePositions: List<Square> = pieceController.getKingPossiblePositions(nextKing).filter {
+            val pieceInSq =  pieceController.getPieceInSquare(it)
+            !movementValidator.isMoveOutOfBoard(rows, cols, it) && (pieceInSq === null || pieceInSq.getColor() === nextKing.getColor())
+        }
         val thisColorPieces: List<Piece> = pieceController.getPiecesFromColor(playerToMove.getColor());
         if (ruleController.checkForTie(nextKing, allPieces, nextPlayerToMove.getColor())) {
             return GameFinisher(true, null)
@@ -146,16 +148,14 @@ class Game() {
         return GameFinisher(false)
     }
 
-    fun offerStaleMate() {
+    fun offerStaleMate(): GameFinisher {
         val nextPlayerToMove: Player = players[turnController.changePlayerTurn()]
-        if (nextPlayerToMove.respondStaleMate()) {
-            return
-        }
+        return GameFinisher(nextPlayerToMove.respondStaleMate())
     }
 
-    fun resign() {
+    fun resign(): GameFinisher {
         val nextPlayerToMove: Player = players[turnController.changePlayerTurn()]
-        return
+        return GameFinisher(true, nextPlayerToMove.getColor())
     }
 
     fun getPieces(): List<Piece> {

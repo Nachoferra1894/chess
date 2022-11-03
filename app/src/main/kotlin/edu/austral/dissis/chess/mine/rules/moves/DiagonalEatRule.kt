@@ -4,9 +4,8 @@ import edu.austral.dissis.chess.mine.game.PieceController
 import pieces.Piece
 import squares.Square
 
-class DiagonalEatRule(override val limit: Int = 0) : MoveRule {
-    private val pieceController = PieceController()
-    private val diagonalMoveRule = DiagonalMoveRule(limit)
+class DiagonalEatRule(override val limit: Int = 0,moveType: MoveType) : MoveRule {
+    private val diagonalMoveRule = DiagonalMoveRule(limit,moveType)
 
     override fun isMovePossible(sqFrom: Square, sqTo: Square, pieceInSqTo: Piece?): Boolean {
         return if (pieceInSqTo == null){

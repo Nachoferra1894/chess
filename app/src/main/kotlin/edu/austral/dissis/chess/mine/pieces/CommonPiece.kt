@@ -3,8 +3,8 @@ package pieces
 import squares.Square
 
 abstract class CommonPiece(private val color: PieceColor,private val id: String) {
-    private var isAlive: Boolean = true
     private var position: Square? = null
+    var movesCount: Int = 0;
 
     fun getPosition(): Square?{
         return this.position
@@ -16,13 +16,8 @@ abstract class CommonPiece(private val color: PieceColor,private val id: String)
         return this.id
     }
     fun hasBeenEaten() {
-        this.isAlive = false
         this.position = null
     }
-    fun isActive(): Boolean {
-        return this.isAlive
-    }
-    var movesCount: Int = 0;
 
     open fun makeMove(sq: Square){
         movesCount++;
@@ -43,3 +38,4 @@ abstract class CommonPiece(private val color: PieceColor,private val id: String)
         return true
     }
 }
+

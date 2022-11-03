@@ -6,7 +6,6 @@ import squares.Square
 
 interface Piece {
     fun getId(): String
-    fun isActive(): Boolean
     fun hasBeenEaten()
     fun getName(): PieceName
     fun getColor(): PieceColor

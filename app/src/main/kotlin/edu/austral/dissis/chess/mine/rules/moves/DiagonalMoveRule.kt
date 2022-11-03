@@ -3,7 +3,7 @@ package rules.moves
 import pieces.Piece
 import squares.Square
 
-class DiagonalMoveRule(override val limit: Int = 0) : MoveRule {
+class DiagonalMoveRule(override var limit: Int = 0, override var moveType: MoveType = MoveType.ANY) : MoveRule, CommonMoveRule(limit, moveType) {
     override fun isMovePossible(sqFrom: Square, sqTo: Square, pieceInSqTo: Piece?): Boolean {
         var fromRow = sqFrom.getRow()
         var fromCol = sqFrom.getColumn()
@@ -14,12 +14,13 @@ class DiagonalMoveRule(override val limit: Int = 0) : MoveRule {
         val colIterator = if (fromCol > toCol) -1 else 1
         var counter = 0;
 
-        while (fromRow != toRow && fromCol != toCol && (limit == 0 || counter < limit)) {
+        while (fromRow != toRow && fromCol != toCol && (super.isMovePossible(counter + 1))) {
             fromRow+=rowIterator
             fromCol+=colIterator
             counter++
         }
         return (fromRow == toRow && fromCol == toCol)
+
     }
     override fun getRowMoveType(): Int {
         return 1

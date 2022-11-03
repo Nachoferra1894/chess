@@ -16,7 +16,6 @@ class RuleController() {
     private val fiftyKingMovesRule = FiftyKingMovesRule()
     private val stalemateRule = StalemateRule()
     private val tieRules: List<EndGameRule> = listOf(stalemateRule)
-    private val movementValidator = MovementValidator()
 
     fun checkForCheck(king: King,otherColorPieces: List<Piece>,allPieces: List<Piece>,eatenPiece: Piece? = null): Boolean{
         // I create a new board, to check if the move blocks the check

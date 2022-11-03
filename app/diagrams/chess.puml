@@ -1,0 +1,194 @@
+@startuml
+'Pieces
+interface Piece {
+    - name: String
+    + isActive(): boolean
+    + getPosition(): Square
+    + getColor(): string
+    + getName(): string
+}
+Pawn --> CommonPiece
+Bishop --> CommonPiece
+Horse --> CommonPiece
+King --> CommonPiece
+Queen --> CommonPiece
+Rook --> CommonPiece
+Rule <-- Piece
+
+Square <-- Piece
+abstract class CommonPiece {
+    - position: Square?
+    - moveCount: Int
+    + getPosition()
+    + getColor()
+    + getId()
+    + hasBeenEaten()
+    + isActive()
+    + makeMove()
+    + getMoveCount()
+    + resetMoves()
+    + useNoPieceCrashRule()
+    + useNoPieceCollide()
+
+}
+class Bishop implements Piece{
+    - color: PieceColor
+    - rules: List<Rule>
+    + getName()
+}
+class Horse implements Piece{
+    - color: PieceColor
+    - rules: List<Rule>
+    + getName()
+}
+class King implements Piece{
+    - color: PieceColor
+    - rules: List<Rule>
+    + getName()
+}
+class Pawn implements Piece{
+    - color: PieceColor
+    - rules: List<Rule>
+    + getName()
+    + makeMove
+    + getRules()
+}
+class Queen implements Piece{
+    - color: PieceColor
+    - rules: List<Rule>
+    + getName()
+}
+class Rook implements Piece{
+    - color: PieceColor
+    - rules: List<Rule>
+    + getName()
+}
+'Game objects
+class Game {
+    - playerGenerator: PlayerGenerator
+    - movementValidator: MovementValidator
+    - turnController: TurnController
+    - pieceController: PieceController
+    - boardGenerator: BoardGenerator
+
+   -  players: List<Player>
+   -  player2: Player
+    - ruleController = RuleController()
+    - cols = 0;
+    - rows = 0;
+
+    + startGame(cols: Int,rows: Int,player1Color: PieceColor,player2Color: PieceColor,player1Name: String,player2Name: String)
+    + movePiece(sqFrom: Square, sqTo: Square): GameFinisher
+    + offerStaleMate()
+    + resign()
+    +getPieces()
+}
+class TurnController {
+    - playerTurn: Int
+    + getPlayerTurn()
+    + changePlayerTurn()
+}
+TurnController <-- Game
+class BoardGenerator {
+    + createBoard(columns,rows,pieces)
+}
+BoardGenerator --> Game
+BoardGenerator <-- Piece
+class PieceGenerator {
+    + createPiece(name,color,id)
+}
+class PlayerGenerator{
+    + createPlayer(name)
+}
+Player <-- PlayerGenerator
+Piece <-- PieceGenerator
+
+
+interface Square {
+    - row: Number
+    - column: Number
+    + getRow()
+    + getColumn()
+}
+class PositionSquare implements Square{
+}
+'class Timer {
+'    - startGameTime: Timestamp
+'    - maxTime: Timestamp
+'    + resumeTimer()
+'    + stopTimer()
+'    + endGame()
+'}
+
+interface Player {
+    + getColor(): PieceColor
+    + offerStalemate()
+    + respondStalemate(): boolean
+    + getName()
+}
+class HumanPlayer {
+    - name: string
+}
+HumanPlayer ..|> Player
+Game --*  Piece
+
+
+Player --*  Game
+
+'Rules
+class RuleController {
+    - endGameRule: CheckMateRule
+    - tieRules: EndGameRule[]
+    + checkForCheck(king: King,otherColorPieces: List<Piece>,allPieces: List<Piece>,eatenPiece: Piece?)
+    + checkForCheckMate(king: King,otherColorPieces: List<Piece>,allPieces: List<Piece>,kingPossibleMoves: List<Square>)
+    + checkForTie(king: King,pieces: List<Piece>,colorToCheck: PieceColor)
+
+}
+
+RuleController *--  EndGameRule
+Game *-- RuleController
+
+interface EndGameRule {
+    + hasGameFinished()
+}
+class StaleMateRule implements EndGameRule{
+    + hasGameFinished()
+}
+class FiftyKingMoves implements EndGameRule{
+    + hasGameFinished()
+}
+interface Rule {
+    + isPossible(pieces Piece[],possibleMovement: Movement): Boolean
+}
+PiecePointer --> RuleController
+class PiecePointer {
+   + isPiecePointedBy(kingPos: Square, otherColorPieces: List<Piece>, allPieces: List<Piece>, eatenPiece: Piece? = null)
+}
+Square <-- PiecePointer
+class MaxBoardRule implements Rule {
+}
+class NoPieceCrash implements Rule {
+}
+class CastleRule implements Rule {
+}
+class PassantCaptureRule implements Rule {
+}
+interface MoveRule extends Rule {
+    - limit: <Optional> int
+    - moveType: <Optional> MoveTypeEnum
+}
+class HorizontalMoveRule implements MoveRule {
+}
+class VerticalMoveRule implements MoveRule {
+}
+class DiagonalMoveRule implements MoveRule {
+}
+class DiagonalEatRule implements MoveRule {
+}
+abstract class CommonMoveRule {
+}
+VerticalMoveRule --> CommonMoveRule
+HorizontalMoveRule --> CommonMoveRule
+
+
+@enduml

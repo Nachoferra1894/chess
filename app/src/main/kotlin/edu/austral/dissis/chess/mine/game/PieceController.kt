@@ -15,7 +15,9 @@ class PieceController {
         PieceName.QUEEN to 1,
         PieceName.PAWN to 8,
         PieceName.ROOK to 2,
-        PieceName.BISHOP to 2,
+        PieceName.BISHOP to 1,
+        PieceName.ARCHBISHOP to 1,
+        PieceName.CHANCELLOR to 1,
         PieceName.KNIGHT to 2
     )
     private var pieces: MutableList<Piece> = mutableListOf()

@@ -10,7 +10,7 @@ import squares.Square
 
 class Pawn(color: PieceColor,id: String,moveType: MoveType): Piece, CommonPiece(color,id) {
     private val verticalMoveRule = VerticalMoveRule(2,moveType)
-    private val diagonalEatRule = DiagonalEatRule(1)
+    private val diagonalEatRule = DiagonalEatRule(1,moveType)
     private val passantCaptureRule = PassantCaptureRule()
 
     private val rules: List<MoveRule> = listOf(verticalMoveRule,diagonalEatRule)

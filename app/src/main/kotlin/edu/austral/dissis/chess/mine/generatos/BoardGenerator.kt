@@ -20,10 +20,22 @@ class BoardGenerator {
         blackPieceQueue = addPawns(cols,6,blackPieceQueue)
         blackPieceQueue = addCommonPieces(cols,7,blackPieceQueue)
 
+        whitePieceQueue = addChancellor(4,5,whitePieceQueue)
+        blackPieceQueue = addChancellor(4,2,blackPieceQueue)
+
         if (whitePieceQueue.size + blackPieceQueue.size > 0){
-            println("Piece error!")
+            println("More pieces in queue than in board!")
         }
 
+    }
+
+    private fun addChancellor(col: Int, row: Int, pieceSet: MutableList<Piece>): MutableList<Piece> {
+        val movePiece = pieceSet.find {
+            it.getName() === PieceName.CHANCELLOR
+        }
+        pieceSet.remove(movePiece);
+        movePiece?.makeMove(PositionSquare(row,col));
+        return pieceSet
     }
 
     private fun addCommonPieces(cols: Int,row: Int,pieceSet: MutableList<Piece>):  MutableList<Piece>{
@@ -37,8 +49,11 @@ class BoardGenerator {
                     1,6 -> {
                         pieceName === PieceName.KNIGHT
                     }
-                    2,5-> {
+                    2-> {
                         pieceName === PieceName.BISHOP
+                    }
+                    5-> {
+                        pieceName === PieceName.ARCHBISHOP
                     }
                     4 -> {
                         pieceName === PieceName.KING

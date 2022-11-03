@@ -23,9 +23,9 @@ class MovementValidator {
         }
         for (rule in moveRules){
             if(rule.isMovePossible(sqFrom, sqTo,eatenPiece)){
-                return if (noPieceCrash){
-                    noPieceCrashRule.isMovePossible(sqFrom,sqTo,rule,pieces)
-                } else true
+                if (!noPieceCrash || noPieceCrashRule.isMovePossible(sqFrom,sqTo,rule,pieces) ){
+                    return true
+                }
             }
         }
 
