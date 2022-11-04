@@ -7,7 +7,6 @@ import pieces.PieceColor
 class CustomGameEngine: GameEngine {
     private val classicGame = GameAdapter()
     override fun applyMove(move: Move): MoveResult {
-
         return try {
             classicGame.move(move)
         }catch (e: Exception){

@@ -13,7 +13,6 @@ import squares.Square
 
 class RuleController() {
     private val piecePointerRule = PiecePointer()
-    private val fiftyKingMovesRule = FiftyKingMovesRule()
     private val stalemateRule = StalemateRule()
     private val tieRules: List<EndGameRule> = listOf(stalemateRule)
 
@@ -23,14 +22,10 @@ class RuleController() {
         return piecePointerRule.isPiecePointedBy(kingPos,otherColorPieces,allPieces,eatenPiece) !== null
     }
     fun checkForTie(king: King,pieces: List<Piece>,colorToCheck: PieceColor): Boolean{
-        if (checkMaxKingMoves(king)) return true
         for (rule in tieRules){
             if (rule.hasGameFinished(pieces,colorToCheck)) return true
         }
         return false
-    }
-    private fun checkMaxKingMoves(king: King): Boolean{
-        return fiftyKingMovesRule.hasGameFinished(king)
     }
     fun checkForCheckMate(king: King,otherColorPieces: List<Piece>,allPieces: List<Piece>,kingPossibleMoves: List<Square>): Boolean {
         val kingPos = king.getPosition() ?: return false

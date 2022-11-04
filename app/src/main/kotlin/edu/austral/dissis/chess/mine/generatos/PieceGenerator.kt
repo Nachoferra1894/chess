@@ -19,6 +19,7 @@ class PieceGenerator {
             PieceName.KING -> King(pieceColor,pieceId)
             PieceName.CHANCELLOR -> Chancellor(pieceColor,pieceId,contraryMoveType,moveType)
             PieceName.ARCHBISHOP -> Archbishop(pieceColor,pieceId)
+
             else -> {
                 throw IllegalArgumentException("Piece not in chess pieces!")
             }

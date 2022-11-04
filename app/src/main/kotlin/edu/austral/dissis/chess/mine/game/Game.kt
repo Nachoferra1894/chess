@@ -1,5 +1,6 @@
 package game
 
+import edu.austral.dissis.chess.mine.game.CommonEndGameController
 import edu.austral.dissis.chess.mine.game.InitialGameState
 import edu.austral.dissis.chess.mine.game.PieceController
 import generatos.BoardGenerator
@@ -20,6 +21,8 @@ class Game() {
     private val turnController: TurnController = TurnController()
     private val pieceController: PieceController = PieceController()
     private val boardGenerator: BoardGenerator = BoardGenerator()
+    private val commonEndGameController: CommonEndGameController = CommonEndGameController()
+
 
     private lateinit var players: List<Player>
     private lateinit var player2: Player
@@ -125,25 +128,20 @@ class Game() {
         }
         val nextPlayerToMove = players[turnController.changePlayerTurn()]
         val nextKing: King = pieceController.getKingPosition(nextPlayerToMove.getColor());
-
         if (pieceToMove.getName() === PieceName.PAWN) {
             nextKing.resetMoves()
         }
-        return endGameChecker(nextKing,allPieces,nextPlayerToMove,playerToMove)
 
-    }
-
-    fun endGameChecker (nextKing: King, allPieces: List<Piece>, nextPlayerToMove: Player,playerToMove: Player,): GameFinisher {
-        val kingPossiblePositions: List<Square> = pieceController.getKingPossiblePositions(nextKing).filter {
-            val pieceInSq =  pieceController.getPieceInSquare(it)
-            !movementValidator.isMoveOutOfBoard(rows, cols, it) && (pieceInSq === null || pieceInSq.getColor() === nextKing.getColor())
-        }
         val thisColorPieces: List<Piece> = pieceController.getPiecesFromColor(playerToMove.getColor());
+        // Agregar un end game validator que adentro haga las validaciones de chack mate y todo eso
         if (ruleController.checkForTie(nextKing, allPieces, nextPlayerToMove.getColor())) {
             return GameFinisher(true, null)
         }
-        if (ruleController.checkForCheckMate(nextKing, thisColorPieces, allPieces, kingPossiblePositions)) {
+        if (commonEndGameController.hasPlayerWon(nextKing,otherColorPieces,allPieces,pieceController,movementValidator,rows,cols)) {
             return GameFinisher(true, playerToMove.getColor())
+        }
+        if (commonEndGameController.isATie(nextKing, allPieces, nextPlayerToMove.getColor())) {
+            return GameFinisher(true, null)
         }
         return GameFinisher(false)
     }

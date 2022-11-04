@@ -16,6 +16,7 @@ class MovementValidator {
         val moveRules = pieceToMove.getMovementRules()
         val noPieceCrash = pieceToMove.useNoPieceCrashRule()
         val noPieceCollide = pieceToMove.useNoPieceCollide()
+
         if (noPieceCollide){
             if (eatenPiece !== null && eatenPiece.getColor() === pieceToMove.getColor()){
                 return false
