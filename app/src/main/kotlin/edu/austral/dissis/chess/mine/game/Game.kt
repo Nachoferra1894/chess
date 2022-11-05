@@ -1,9 +1,11 @@
 package game
 
+import edu.austral.dissis.chess.mine.game.ChancellorEndGameController
 import edu.austral.dissis.chess.mine.game.CommonEndGameController
 import edu.austral.dissis.chess.mine.game.InitialGameState
 import edu.austral.dissis.chess.mine.game.PieceController
-import generatos.BoardGenerator
+import edu.austral.dissis.chess.mine.generatos.ChessPiecesInBoardGenerator
+import edu.austral.dissis.chess.mine.generatos.ExtraPiecesInBoardGenerator
 import generatos.PlayerGenerator
 import pieces.MovementValidator
 import pieces.Piece
@@ -20,8 +22,12 @@ class Game() {
     private val movementValidator: MovementValidator = MovementValidator()
     private val turnController: TurnController = TurnController()
     private val pieceController: PieceController = PieceController()
-    private val boardGenerator: BoardGenerator = BoardGenerator()
+
+    private val chancellorEndGameController: ChancellorEndGameController = ChancellorEndGameController()
     private val commonEndGameController: CommonEndGameController = CommonEndGameController()
+    private val chessPiecesInBoardGenerator: ChessPiecesInBoardGenerator = ChessPiecesInBoardGenerator()
+    private val extraPiecesInBoardGenerator: ExtraPiecesInBoardGenerator = ExtraPiecesInBoardGenerator()
+
 
 
     private lateinit var players: List<Player>
@@ -49,8 +55,9 @@ class Game() {
             playerGenerator.createPlayer(player2Name, player2Color)
         )
 
-        val pieces = pieceController.generatePieces(player1Color, player2Color)
-        boardGenerator.createBoard(cols, rows, pieces)
+        val boardPieces = extraPiecesInBoardGenerator.getPiecesInBoard()
+        val pieces = pieceController.generatePieces(player1Color, player2Color,boardPieces)
+        extraPiecesInBoardGenerator.createBoard(cols, rows, pieces)
         turnController.initTurns(PieceColor.WHITE)
         return InitialGameState(rows, cols, pieces, PieceColor.WHITE)
     }
@@ -79,7 +86,7 @@ class Game() {
         val allPieces = pieceController.getPieces();
         val otherColorPieces = pieceController.getPiecesNotFromColor(playerToMove.getColor());
 
-        val king: King = pieceController.getKingPosition(playerToMove.getColor());
+        val king: Piece = pieceController.getFirstPiecePosition(PieceName.KING,playerToMove.getColor()) ?: throw IllegalArgumentException("King not in board")
 
         val eatenPiece = pieceController.getPieceInSquare(sqTo)
         var castlePosition: Square? = null
@@ -107,7 +114,7 @@ class Game() {
         // to check if the move avoids the check
         if(castlePosition === null) pieceController.movePieceToSquare(sqTo, pieceToMove)
         // Because the castling can't avoid the check
-        if (ruleController.checkForCheck(king, otherColorPieces, allPieces, eatenPiece)) {
+        if (ruleController.checkForCheck(king as King, otherColorPieces, allPieces, eatenPiece)) {
             // If it does not, go back to that square
             pieceController.movePieceToSquare(sqFrom, pieceToMove)
             throw IllegalArgumentException("${playerToMove.getColor()} is on Check")
@@ -127,20 +134,11 @@ class Game() {
             pieceController.promotePiece(pieceToMove, PieceName.QUEEN) // TODO maybe add a selector
         }
         val nextPlayerToMove = players[turnController.changePlayerTurn()]
-        val nextKing: King = pieceController.getKingPosition(nextPlayerToMove.getColor());
-        if (pieceToMove.getName() === PieceName.PAWN) {
-            nextKing.resetMoves()
-        }
 
-        val thisColorPieces: List<Piece> = pieceController.getPiecesFromColor(playerToMove.getColor());
-        // Agregar un end game validator que adentro haga las validaciones de chack mate y todo eso
-        if (ruleController.checkForTie(nextKing, allPieces, nextPlayerToMove.getColor())) {
-            return GameFinisher(true, null)
-        }
-        if (commonEndGameController.hasPlayerWon(nextKing,otherColorPieces,allPieces,pieceController,movementValidator,rows,cols)) {
+        if (chancellorEndGameController.hasPlayerWon(pieceToMove,nextPlayerToMove,pieceController,movementValidator,rows,cols)) {
             return GameFinisher(true, playerToMove.getColor())
         }
-        if (commonEndGameController.isATie(nextKing, allPieces, nextPlayerToMove.getColor())) {
+        if (chancellorEndGameController.isATie(allPieces, nextPlayerToMove.getColor(),pieceController)) {
             return GameFinisher(true, null)
         }
         return GameFinisher(false)

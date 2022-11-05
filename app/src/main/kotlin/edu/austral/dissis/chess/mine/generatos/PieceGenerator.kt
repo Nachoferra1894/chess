@@ -17,7 +17,7 @@ class PieceGenerator {
             PieceName.BISHOP -> Bishop(pieceColor,pieceId)
             PieceName.QUEEN -> Queen(pieceColor,pieceId)
             PieceName.KING -> King(pieceColor,pieceId)
-            PieceName.CHANCELLOR -> Chancellor(pieceColor,pieceId,contraryMoveType,moveType)
+            PieceName.CHANCELLOR -> Chancellor(pieceColor,pieceId,moveType)
             PieceName.ARCHBISHOP -> Archbishop(pieceColor,pieceId)
 
             else -> {

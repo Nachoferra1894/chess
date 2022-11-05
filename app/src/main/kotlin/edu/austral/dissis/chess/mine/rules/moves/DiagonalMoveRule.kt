@@ -12,12 +12,13 @@ class DiagonalMoveRule(override var limit: Int = 0, override var moveType: MoveT
 
         val rowIterator = if (fromRow > toRow) -1 else 1
         val colIterator = if (fromCol > toCol) -1 else 1
+        val counterEscalator = if(moveType === MoveType.BACKWARDS) -1 else 1
         var counter = 0;
 
-        while (fromRow != toRow && fromCol != toCol && (super.isMovePossible(counter + 1))) {
+        while (fromRow != toRow && fromCol != toCol && (super.isMovePossible(counter + counterEscalator))) {
             fromRow+=rowIterator
             fromCol+=colIterator
-            counter++
+            counter+=counterEscalator
         }
         return (fromRow == toRow && fromCol == toCol)
 

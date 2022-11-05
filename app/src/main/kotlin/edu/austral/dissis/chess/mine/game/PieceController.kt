@@ -1,5 +1,6 @@
 package edu.austral.dissis.chess.mine.game
 
+import edu.austral.dissis.chess.mine.generatos.ChessPiecesInBoardGenerator
 import generatos.PieceGenerator
 import pieces.Piece
 import pieces.PieceColor
@@ -10,27 +11,17 @@ import squares.PositionSquare
 import squares.Square
 
 class PieceController {
-    private val pieceNames: HashMap<PieceName, Int> = hashMapOf(
-        PieceName.KING to 1,
-        PieceName.QUEEN to 1,
-        PieceName.PAWN to 8,
-        PieceName.ROOK to 2,
-        PieceName.BISHOP to 1,
-        PieceName.ARCHBISHOP to 1,
-        PieceName.CHANCELLOR to 1,
-        PieceName.KNIGHT to 2
-    )
+
     private var pieces: MutableList<Piece> = mutableListOf()
     private val pieceGenerator: PieceGenerator = PieceGenerator()
 
-    constructor() {
-    }
+    constructor()
 
     constructor(pieces: List<Piece>) {
         this.pieces = pieces.toMutableList()
     }
 
-    fun generatePieces(player1Color: PieceColor, player2Color: PieceColor): List<Piece> {
+    fun generatePieces(player1Color: PieceColor, player2Color: PieceColor,pieceNames: HashMap<PieceName,Int>): List<Piece> {
         val thisPieces: MutableList<Piece> = mutableListOf();
         var index = 0
         for ((key, value) in pieceNames) {
@@ -64,13 +55,10 @@ class PieceController {
         pieceToMove.makeMove(sq)
     }
 
-    fun getKingPosition(pieceColor: PieceColor): King {
-        val king: Piece? = pieces.find {
-            it.getName() === PieceName.KING && it.getColor() === pieceColor
+    fun getFirstPiecePosition(pieceName: PieceName,pieceColor: PieceColor): Piece? {
+        return pieces.find {
+            it.getName() === pieceName && it.getColor() === pieceColor
         }
-        if (king === null){
-            throw IllegalArgumentException("King not in board!")
-        } else return king as King
     }
 
     fun getPiecesNotFromColor(color: PieceColor): List<Piece> {

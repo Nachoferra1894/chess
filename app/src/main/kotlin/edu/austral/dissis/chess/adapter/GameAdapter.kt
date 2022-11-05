@@ -61,7 +61,7 @@ class GameAdapter() {
         return NewGameState(this.getPieces(), this.nextMove())
     }
 
-    fun nextMove(): PlayerColor {
+    private fun nextMove(): PlayerColor {
         return if(customGame.getPlayerToMove().getColor() == PieceColor.WHITE) {
             PlayerColor.WHITE
         }else{
